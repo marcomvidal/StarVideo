@@ -1,0 +1,45 @@
+{% block navbar %}
+<nav class="navbar navbar-default">
+  <div class="container">
+    <!-- Logotipo e alteração de layout para mobile -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Mudar navegação</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+        <a class="navbar-brand" href="#"><span class="fa fa-star-o"></span> StarVideo</a>
+    </div>
+    <!-- /Logotipo e alteração de layout para mobile -->
+    <!-- Links de navegação, formulários e opções à direita -->
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+      <ul class="nav navbar-nav">
+        <li><a href="#">Locações</a></li>
+        <li><a href="#">Clientes</a></li>
+        <li><a href="#">Filmes</a></li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+          {% if user.is_authenticated %}
+              <i class="fa fa-user-circle-o"></i> {{ user.first_name }} {{ user.last_name }} <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li><a href="#"><i class="fa fa-cog"></i> Preferências</a></li>
+              <li><a href="#"><i class="fa fa-edit"></i> Alterar senha</a></li>
+              <li role="separator" class="divider"></li>
+                <li><a href="#"><span class="fa fa-sign-out"></span> Sair</a></li>
+            </ul>
+          {% else %}
+            <i class="fa fa-user"></i> Visitante <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#"><i class="fa fa-sign-in"></i> Entrar</a></li>
+            </ul>
+          {% endif %}
+        </li>
+      </ul>
+    </div>
+    <!-- /Links de navegação, formulários e opções à direita -->
+  </div>
+</nav>
+{% endblock navbar %}

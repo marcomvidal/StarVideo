@@ -1,0 +1,128 @@
+{% extends "common/base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% block title %}Cadastro de Filmes{% endblock %}
+
+{% block body %}
+<h1><span class="fa fa-film"></span> Cadastro de Filmes</h1>
+
+
+<form action="{% url 'locacoes:filme-create' %}" method="POST" class="form" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="row">
+
+    {% bootstrap_form_errors form error_types=all %}
+
+    {% if filme is not None %}
+    <div class="col-md-9">
+    {% else %}
+    <div class="col-md-12">
+    {% endif %}
+
+        <div class="form-group col-md-12">
+            <label for="titulo">Título</label>
+            <input name="titulo" value="{{ form.titulo.value|default:'' }}" id="titulo" type="text" placeholder="Título" class="form-control" required autofocus>
+            {% if form.titulo.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.titulo.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="classificacao">Classificação</label>
+            <select name="classificacao" id="classificacao" class="form-control" required>
+            {% for id, nome in form.fields.classificacao.choices %}
+                <option value="{{ id }}" {% if form.fields.classificacao.id == id %} selected {% endif %}>{{ nome }}</option>
+            {% endfor %}
+            </select>
+
+            {{ form.classificacao }}
+
+            {% if form.classificacao.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.classificacao.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="genero">Gênero</label>
+            <select name="genero" id="genero" class="form-control" required>
+            {% for id, genero in form.fields.genero.choices %}
+                <option value="{{ id }}" {% if form.fields.genero.id == id %} selected {% endif %}>{{ genero }}</option>
+            {% endfor %}
+            </select>
+            {% if form.genero.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.genero.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-12">
+            <label for="sinopse">Sinopse</label>
+            <textarea name="sinopse" id="sinopse" placeholder="Sinopse" rows="10" class="form-control">{{ form.sinopse.value|default:'' }}</textarea>
+            {% if form.sinopse.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.sinopse.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-3">
+            <label for="Quantidade">Quantidade</label>
+            <input name="quantidade" value="{{ form.quantidade.value|default:'' }}" id="quantidade" type="number" placeholder="Quantidade" class="form-control" required>
+            {% if form.quantidade.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.quantidade.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-3">
+            <label for="data_lancamento">Data de Lançamento</label>
+            <input name="data_lancamento" value="{{ form.data_lancamento.value|default:'' }}" id="data_lancamento" type="date" placeholder="Data de Lançamento" class="form-control">
+            {% if form.data_lancamento.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.data_lancamento.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="capa">Capa</label>
+            <input name="capa" id="capa" class="form-control" type="file" accept="image/*" title="Selecione uma imagem que será a capa deste filme.">
+            {% if form.capa.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.capa.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+
+
+        <div class="col-md-4">
+            <label for="blockbuster" title="Blockbusters possuem valor de locação 50% maior."><input type="checkbox" id="blockbuster" name="blockbuster" value="{{ form.blockbuster.value }}"> Este filme é um blockbuster?</label>
+        </div>
+    </div>
+
+    {% if filme is not None %}
+    <a class="col-md-3 thumbnail" href="#">
+        <img class="img-rounded" src="{{ capa.photo.url }}" />
+    </a>
+    {% endif %}
+</div>
+
+<hr />
+
+<div class="col-md-6 text-left">
+    <a class="btn btn-default" href="#"><span class="fa fa-arrow-left"></span> Voltar</a>
+</div>
+<div class="col-md-6 text-right">
+    <button type="submit" class="btn btn-sucess" href="#"><span class="fa fa-check"></span> Enviar</button>
+</div>
+</form>
+
+
+{% endblock %}

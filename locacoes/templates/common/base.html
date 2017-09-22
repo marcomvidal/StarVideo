@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>StarVideo - {% block title %}{% endblock %}</title>
+    {% load bootstrap3 %}
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.min.css' %}" />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+</head>
+<body>
+<!-- Barra de Navegação -->
+{% block navbar %}
+    {% include "common/navbar.html" %}
+{% endblock %}
+
+<!-- Corpo da Página -->
+<div class="container">
+    {% block body %}{% endblock %}
+</div>
+
+<!-- Rodapé da Página -->
+{% block footer %}
+    {% include "common/footer.html" %}
+{% endblock %}
+
+<!-- Scripts JavaScript -->
+{% bootstrap_javascript jquery=1 %}
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends "common/base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% block title %}Filmes Disponíveis{% endblock %}
+
+{% block body %}
+<h1><span class="fa fa-film"></span> Filmes Disponíveis</h1>
+
+<div class="row">
+{% if filmes %}
+    {% for filme in filmes %}
+    <div class="col-md-4">
+    <h4>{{ filme.titulo }}</h4>
+    {{ filme.capa }}
+    <ul>
+        <li>Blockbuster: {{ filme.blockbuster }}</li>
+        <li>Quantidade: {{ filme.quantidade }}</li>
+        <li>Gênero: {{ filme.genero }}</li>
+        <li>Lançamento: {{ filme.data_lancamento|date:"M/Y" }}</li>
+        <li>Classificação: {{ filme.classificacao }}</li>
+    </ul>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+{% endblock %}
