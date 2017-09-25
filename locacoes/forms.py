@@ -7,8 +7,8 @@ from .models import Filme, Classificacao, Genero
 
 class FilmeForm(forms.ModelForm):
     data_lancamento = forms.DateTimeField(required=False)
-    capa = forms.ImageField(required=False)
-    blockbuster = forms.BooleanField(required=False, initial=True)
+    capa            = forms.ImageField(required=False)
+    blockbuster     = forms.BooleanField(required=False, initial=True)
 
     class Meta:
         model = Filme

@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.http import HttpResponseRedirect, HttpResponse
 
-from .models import Filme
+from .models import Filme, Classificacao, Genero
 from .forms import FilmeForm
 
 
@@ -32,7 +32,9 @@ def filmes_create(request):
 
 def filmes_edit(request, pk):
     """Edição de um filme existente"""
-    filme = get_object_or_404(Filme, pk=pk)
+    filme       = get_object_or_404(Filme, pk=pk)
+    categorias  = Classificacao.objects.all()
+    generos     = Genero.objects.all()
 
     if request.POST:
         form = FilmeForm(request.POST, instance=filme)
@@ -47,7 +49,9 @@ def filmes_edit(request, pk):
         form = FilmeForm(instance=filme)
 
     context = {
-        'form': form
+        'form': form,
+        'categorias': categorias,
+        'generos': generos
     }
 
     return render(request, 'filmes/form.html', context)
