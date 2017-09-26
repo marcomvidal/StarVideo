@@ -9,8 +9,10 @@ from .models import Filme, Classificacao, Genero
 from .forms import FilmeForm
 
 
-def filmes_create(request):
+def filmes_criar(request):
     """ Cadastro de filmes """
+    generos         = Genero.objects.all()
+    classificacoes  = Classificacao.objects.all()
 
     if request.method == 'POST':
         form = FilmeForm(request.POST, request.FILES)
@@ -19,56 +21,49 @@ def filmes_create(request):
             filme = form.save(commit=False)
             filme.usuario = request.user
             filme.save()
-
-            return HttpResponseRedirect('/filmes/sucesso/')
+            return redirect('locacoes:filmes-index')
 
     form = FilmeForm()
 
     context = {
-        'form': form
+        'form': form,
+        'generos': generos,
+        'classificacoes': classificacoes,
     }
     return render(request, 'filmes/form.html', context)
 
 
-def filmes_edit(request, pk):
+def filmes_editar(request, pk):
     """Edição de um filme existente"""
-    filme       = get_object_or_404(Filme, pk=pk)
-    categorias  = Classificacao.objects.all()
-    generos     = Genero.objects.all()
+    filme           = get_object_or_404(Filme, pk=pk)
+    generos         = Genero.objects.all()
+    classificacoes  = Classificacao.objects.all()
 
-    if request.POST:
-        form = FilmeForm(request.POST, instance=filme)
+    if request.method == 'POST':
+        form = FilmeForm(request.POST, request.FILES, instance=filme)
 
         if form.is_valid():
             filme = form.save(commit=False)
             filme.usuario = request.user
             filme.save()
-
-            return HttpResponseRedirect('/filmes/sucesso/')
+            return redirect('locacoes:filmes-index')
     else:
         form = FilmeForm(instance=filme)
 
     context = {
         'form': form,
-        'categorias': categorias,
-        'generos': generos
+        'filme': filme,
+        'generos': generos,
+        'classificacoes': classificacoes,
     }
 
     return render(request, 'filmes/form.html', context)
 
 
 class FilmeIndexView(ListView):
-    """ Exibição de todos os filmes cadastrados no banco de dados. """
+    """ Exibição de todos os filmes cadastrados """
     template_name = 'filmes/index.html'
     context_object_name = 'filmes'
 
     def get_queryset(self):
         return Filme.objects.order_by('titulo')
-
-
-def success(request):
-    return HttpResponse("Sucesso!")
-
-
-def fail(request):
-    return HttpResponse("Falha!")

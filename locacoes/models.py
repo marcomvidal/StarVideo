@@ -75,7 +75,7 @@ class Filme(models.Model):
     quantidade = models.IntegerField()
     data_lancamento = models.DateTimeField(blank=True, null=True)
     blockbuster = models.BooleanField(default=False)
-    capa = models.ImageField(upload_to='filmes', blank=True, default='')
+    capa = models.ImageField(upload_to='filmes/', blank=True, default='')
     usuario = models.ForeignKey('auth.User')
     classificacao = models.ForeignKey('locacoes.Classificacao')
     genero = models.ForeignKey('locacoes.Genero')

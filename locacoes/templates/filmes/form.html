@@ -3,11 +3,18 @@
 {% load static %}
 {% block title %}Cadastro de Filmes{% endblock %}
 
+
 {% block body %}
 <h1><span class="fa fa-film"></span> Cadastro de Filmes</h1>
 
 
-<form action="{% url 'locacoes:filme-create' %}" method="POST" class="form" enctype="multipart/form-data">
+{% if filme is Null %}
+<form action="{% url 'locacoes:filmes-criar' %}" method="POST" class="form" enctype="multipart/form-data">
+{% else %}
+<form action="{% url 'locacoes:filmes-editar' pk=filme.pk %}" method="POST" class="form" enctype="multipart/form-data">
+{% endif %}
+
+
 {% csrf_token %}
 <div class="row">
 
@@ -32,8 +39,8 @@
         <div class="form-group col-md-6">
             <label for="classificacao">Classificação</label>
             <select name="classificacao" id="classificacao" class="form-control" required>
-            {% for id, nome in form.fields.classificacao.choices %}
-                <option value="{{ id }}" {% if form.fields.classificacao.id == id %} selected {% endif %}>{{ nome }}</option>
+            {% for classificacao in classificacoes %}
+                <option value="{{ classificacao.id }}" {% if classificacao.id == filme.classificacao.id %} selected {% endif %}>{{ classificacao }}</option>
             {% endfor %}
             </select>
 
@@ -47,8 +54,8 @@
         <div class="form-group col-md-6">
             <label for="genero">Gênero</label>
             <select name="genero" id="genero" class="form-control" required>
-            {% for id, genero in form.fields.genero.choices %}
-                <option value="{{ id }}" {% if form.fields.genero.id == id %} selected {% endif %}>{{ genero }}</option>
+            {% for genero in generos %}
+                <option value="{{ genero.id }}" {% if genero.id == filme.genero.id %} selected {% endif %}>{{ genero }}</option>
             {% endfor %}
             </select>
             {% if form.genero.errors %}
@@ -80,7 +87,7 @@
 
         <div class="form-group col-md-3">
             <label for="data_lancamento">Data de Lançamento</label>
-            <input name="data_lancamento" value="{{ form.data_lancamento.value|default:'' }}" id="data_lancamento" type="date" placeholder="Data de Lançamento" class="form-control">
+            <input name="data_lancamento" value="{{ form.data_lancamento.value|date:"Y-m-d"|default:'' }}" id="data_lancamento" type="date" placeholder="Data de Lançamento" class="form-control">
             {% if form.data_lancamento.errors %}
             <div class="alert alert-danger">
                 <strong>{{ form.data_lancamento.errors|striptags }}</strong>
@@ -98,28 +105,23 @@
             {% endif %}
         </div>
 
-
-
         <div class="col-md-4">
             <label for="blockbuster" title="Blockbusters possuem valor de locação 50% maior."><input type="checkbox" id="blockbuster" name="blockbuster" value="{{ form.blockbuster.value }}"> Este filme é um blockbuster?</label>
         </div>
     </div>
 
-    {% if filme is not None %}
-    <a class="col-md-3 thumbnail" href="#">
-        <img class="img-rounded" src="{{ capa.photo.url }}" />
+    {% if filme.capa %}
+    <a class="col-md-3 thumbnail" href="{{ filme.capa.url }}">
+        <img class="img-rounded" src="{{ filme.capa.url }}" />
     </a>
     {% endif %}
 </div>
 
 <hr />
 
-<div class="col-md-6 text-left">
-    <a class="btn btn-default" href="#"><span class="fa fa-arrow-left"></span> Voltar</a>
-</div>
-<div class="col-md-6 text-right">
-    <button type="submit" class="btn btn-sucess" href="#"><span class="fa fa-check"></span> Enviar</button>
-</div>
+{% block save_form %}
+    {% include "common/save_form.html" %}
+{% endblock %}
 </form>
 
 

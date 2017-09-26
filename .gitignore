@@ -1,5 +1,7 @@
 .gitignore
 .idea/
+.vscode/
 media/*
 locacoes/__pycache__/
-.vscode/
+locacoes/migrations/
+StarVideo/__pycache__/

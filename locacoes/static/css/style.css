@@ -1,13 +1,22 @@
+h1 {
+    display: block;
+    text-align: center;
+}
+
 .footer {
-    position: absolute;
     bottom: 0;
+    position: fixed;
+    margin-top: 15px;
     width: 100%;
     line-height: 50px;
     border-style: solid;
     border-width: 1px 1px 0px 1px;
 }
 
-h1 {
-    display: block;
-    text-align: center;
+.container-filme {
+    min-height: 550px;
+}
+
+.capa-filme {
+    margin-bottom: 10px;
 }

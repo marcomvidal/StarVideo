@@ -16,8 +16,14 @@
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
         <li><a href="#">Locações</a></li>
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filmes <span class="caret"></span></a>
+          <ul class="dropdown-menu">
+            <li><a href="{% url 'locacoes:filmes-index' %}"><i class="fa fa-th"></i> Ver todos</a></li>
+            <li><a href="{% url 'locacoes:filmes-criar' %}"><i class="fa fa-plus"></i> Cadastrar</a></li>
+          </ul>
+        </li>
         <li><a href="#">Clientes</a></li>
-        <li><a href="#">Filmes</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
