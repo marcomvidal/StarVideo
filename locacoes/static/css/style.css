@@ -14,9 +14,19 @@ h1 {
 }
 
 .container-filme {
-    min-height: 550px;
+    min-height: 575px;
 }
 
 .capa-filme {
     margin-bottom: 10px;
+}
+
+.icone-classificacao-index {
+    max-height: 25px;
+    max-width: 25px;
+}
+
+.icone-classificacao-detail {
+    max-height: 30px;
+    max-width: 30px;
 }

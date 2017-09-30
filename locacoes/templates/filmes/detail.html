@@ -1,0 +1,70 @@
+{% extends "common/base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% block title %}Filme: {{ filme.titulo }}{% endblock %}
+
+
+{% block body %}
+<h1>
+    <i class="fa fa-film"></i>
+    {{ filme.titulo }}
+    {% if filme.blockbuster is True %}
+    <i class="fa fa-star-o" title="Este filme é um blockbuster"></i>
+    {% endif %}
+    | <a class="btn btn-default" href={% url 'locacoes:filmes-editar' pk=filme.id %}><i class="fa fa-pencil-square-o" title="Editar este filme"></i></a>
+</h1>
+
+<p>&nbsp;</p>
+
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
+    {% if filme is not None %}
+    <li class="active">{{ filme.titulo }}</li>
+    {% else %}
+    <li class="active">Novo Filme</li>
+    {% endif %}
+</ol>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Sinopse</div>
+                <div class="panel-body">
+                    {{ filme.sinopse|escape }}
+                </div>
+                    
+                <table class="table">
+                    <thead>
+                        <th class="col-md-3 text-center">Quantidade</th>
+                        <th class="col-md-3 text-center">Data de Lançamento</th>
+                        <th class="col-md-3 text-center">Gênero</th>
+                        <th class="col-md-3 text-center">Classificação</th>
+                    </thead>
+                    <tr>
+                        <td class="text-center">{{ filme.quantidade }}</td>
+                        <td class="text-center">{{ filme.data_lancamento|date }}</td>
+                        <td class="text-center">{{ filme.genero.genero }}</td>
+                        <td class="text-center"><img class="icone-classificacao-detail" src="{{ filme.classificacao.icone.url }}" /></td>
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% if filme.capa %}
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <a class="thumbnail" href="{{ filme.capa.url }}">
+                <img class="img-rounded" src="{{ filme.capa.url }}" />
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<hr />
+
+{% endblock %}

@@ -5,7 +5,19 @@
 
 
 {% block body %}
-<h1><span class="fa fa-film"></span> Cadastro de Filmes</h1>
+<h1><i class="fa fa-film"></i> Cadastro de Filmes</h1>
+
+<p>&nbsp;</p>
+
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
+    {% if filme is not None %}
+    <li class="active">Editando: {{ form.titulo.value|default:'' }}</li>
+    {% else %}
+    <li class="active">Novo Filme</li>
+    {% endif %}
+</ol>
 
 
 {% if filme is Null %}
@@ -21,7 +33,7 @@
     {% bootstrap_form_errors form error_types=all %}
 
     {% if filme is not None %}
-    <div class="col-md-9">
+    <div class="col-md-8">
     {% else %}
     <div class="col-md-12">
     {% endif %}
@@ -106,14 +118,18 @@
         </div>
 
         <div class="col-md-4">
-            <label for="blockbuster" title="Blockbusters possuem valor de locação 50% maior."><input type="checkbox" id="blockbuster" name="blockbuster" value="{{ form.blockbuster.value }}"> Este filme é um blockbuster?</label>
+            <label for="id_blockbuster" title="Blockbusters possuem valor de locação 50% maior.">{{ form.blockbuster }} Este filme é um blockbuster?</label>
         </div>
     </div>
 
     {% if filme.capa %}
-    <a class="col-md-3 thumbnail" href="{{ filme.capa.url }}">
-        <img class="img-rounded" src="{{ filme.capa.url }}" />
-    </a>
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <a class="thumbnail" href="{{ filme.capa.url }}">
+                <img class="img-rounded" src="{{ filme.capa.url }}" />
+            </a>
+        </div>
+    </div>
     {% endif %}
 </div>
 

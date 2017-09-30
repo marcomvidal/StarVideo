@@ -4,7 +4,34 @@
 {% block title %}Filmes Disponíveis{% endblock %}
 
 {% block body %}
-<h1><i class="fa fa-film"></i> Filmes Disponíveis</h1>
+<h1><i class="fa fa-film"></i> Filmes Disponíveis | <a class="btn btn-default" href="{% url 'locacoes:filmes-criar' %}" title="Adicionar um novo filme à coleção."><i class="fa fa-plus"></i></a></h1>
+
+<p>&nbsp;</p>
+
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    {% if busca is not Null %}
+        <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
+        <li class="active">Resultados da busca por: "{{ busca }}"</li>
+    {% else %}
+        <li class="active">Filmes</li>
+    {% endif %}
+</ol>
+
+<p></p>
+
+<div class="row">
+    <div class="col-md-12">
+    <form id="formulario_busca" action="{% url 'locacoes:filmes-buscar' %}" method="GET" accept-charset="utf-8">
+        <div class="input-group">
+            <input type="text" name="campo_busca" class="form-control" aria-label="...">
+            <div class="input-group-btn">
+                <button type="submit" class="btn btn-default" aria-expanded="false"><i class="fa fa-search"></i></button>
+            </div>
+        </div>
+    </form>
+    </div>
+</div>
 <p>&nbsp;</p>
 
 <div class="row">
@@ -14,34 +41,72 @@
     <div class="col-md-3 container-filme">
         {% if filme.capa %}
         <div class="col-md-12">
-            <a class="thumbnail capa-filme" href="{{ filme.capa.url }}">
+            <a class="thumbnail capa-filme" href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
                 <img class="img-rounded" src="{{ filme.capa.url }}" />
             </a>
         </div>
         {% endif %}
 
         <div class="col-md-12">
-            <h4 class="text-center">{{ filme.titulo }}
+            <a href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}"><h4 class="text-center">{{ filme.titulo }}</h4></a>
+            <p class="text-center">
+                <img class="icone-classificacao-index" title="Classificação: {{ filme.classificacao.nome }}" src="{{ filme.classificacao.icone.url }}" />
                 {% if filme.blockbuster is True %}
                 <i class="fa fa-star-o" title="Este filme é um blockbuster"></i>
                 {% endif %}
-            </h4>
+            </p>
             <ul>
                 <li><strong>Quantidade:</strong> {{ filme.quantidade }}</li>
                 <li><strong>Gênero:</strong> {{ filme.genero }}</li>
                 <li><strong>Lançamento:</strong> {{ filme.data_lancamento|date:"M/Y" }}</li>
-                <li><strong>Classificação:</strong> {{ filme.classificacao }}</li>
-                
             </ul>
         </div>
         <hr />
         <div class="text-center">
             <a class="btn btn-default" href="{% url 'locacoes:filmes-editar' pk=filme.pk  %}"><i class="fa fa-edit"></i> Editar</a>
-            <a class="btn btn-danger" href="#"><i class="fa fa-close"></i> Excluir</a>
+            <a class="btn btn-danger" href="{% url 'locacoes:filmes-excluir' pk=filme.pk  %}"><i class="fa fa-close"></i> Excluir</a>
         </div>
     </div>
     {% endfor %}
 {% endif %}
 </div>
 
+<!-- Paginação -->
+<div class="text-center">
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+      {% if filmes.has_previous %}
+      <li>
+        <a href="?campo_busca={{ busca }}&page={{ filmes.previous_page_number }}" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% else %}
+      <li class="disabled">
+        <a href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      {% endif %}
+      {% for page in filmes.paginator.page_range %}
+      <li {% if page == filmes.number %}class="active"{% endif %}><a href="?campo_busca={{ busca }}&page={{ page }}">{{ page }}</a></li>
+      {% endfor %}
+      <li>
+        {% if filmes.has_next %}
+        <a href="?campo_busca={{ busca }}&page={{ filmes.next_page_number }}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+        {% else %}
+        <li class="disabled">
+          <a href="#" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+        {% endif %}
+      </li>
+    </ul>
+  </nav>
+</div>
+
 {% endblock %}
+

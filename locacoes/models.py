@@ -92,7 +92,7 @@ class Classificacao(models.Model):
     nome = models.CharField(max_length=255)
     idade = models.IntegerField()
     descricao = models.TextField()
-    icone = models.CharField(max_length=50)
+    icone = models.ImageField(upload_to='classificacoes/', blank=True, default='')
 
     def __str__(self):
         return self.nome
