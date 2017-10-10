@@ -2,37 +2,26 @@
 Views: App 'locacoes'
 """
 from django.shortcuts import render, redirect, get_object_or_404
-from django.views.generic import ListView
-from django.http import HttpResponseRedirect, HttpResponse
+from django.views.generic import ListView, DetailView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.urls import reverse_lazy
 from django.db.models import Q
 
 from .models import Filme, Classificacao, Genero
 from .forms import FilmeForm
 
 
-def filmes_index(request):
-    """ Exibição de todos os filmes cadastrados """
-    filmes      = Filme.objects.all().order_by('titulo')
-    paginator   = Paginator(filmes, 8) # Mostrar 8 filmes por página
-
-    page = request.GET.get('page')
-    try:
-        filmes = paginator.page(page)
-    except PageNotAnInteger:
-        filmes = paginator.page(1)
-    except EmptyPage:
-        filmes = paginator.page(paginator.num_pages)
-
-    context = {
-        'filmes': filmes
-    }
-
-    return render(request, 'filmes/index.html', context)
+class FilmeListView(ListView):
+    """ Exibição de todos os `filmes` cadastrados. """
+    model = Filme
+    template_name = 'filmes/index.html'
+    paginate_by = 8
+    context_object_name = 'filmes'
+    ordering = ['titulo']
 
 
 def filmes_buscar(request):
-    """ Exibição dos filmes que contenham um dado título """
+    """ Exibição dos `filmes` que contenham um dado título. """
     busca       = request.GET.get('campo_busca')
     filmes      = Filme.objects.filter(Q(titulo__icontains=busca)).order_by('titulo')
     paginator   = Paginator(filmes, 8) # Mostrar 8 filmes por página
@@ -53,20 +42,16 @@ def filmes_buscar(request):
     return render(request, 'filmes/index.html', context)
 
 
-def filmes_detalhes(request, pk):
-    filme = get_object_or_404(Filme, pk=pk)
-
-    context = {
-        'filme': filme
-    }
-
-    return render(request, 'filmes/detail.html', context)
-
+class FilmeDetailView(DetailView):
+    """ Exibição detalhada e sem edição de um `filme`. """
+    model = Filme
+    template_name = 'filmes/detail.html'
+     
 
 def filmes_criar(request):
-    """ Cadastro de filmes """
-    generos         = Genero.objects.all()
-    classificacoes  = Classificacao.objects.all()
+    """ Cadastro de `filmes`. """
+    generos = Genero.objects.all()
+    classificacoes = Classificacao.objects.all()
 
     if request.method == 'POST':
         form = FilmeForm(request.POST, request.FILES)
@@ -88,10 +73,10 @@ def filmes_criar(request):
 
 
 def filmes_editar(request, pk):
-    """Edição de um filme existente"""
-    filme           = get_object_or_404(Filme, pk=pk)
-    generos         = Genero.objects.all()
-    classificacoes  = Classificacao.objects.all()
+    """ Edição de um `filme` existente. """
+    filme = get_object_or_404(Filme, pk=pk)
+    generos = Genero.objects.all()
+    classificacoes = Classificacao.objects.all()
 
     if request.method == 'POST':
         form = FilmeForm(request.POST, request.FILES, instance=filme)
@@ -114,9 +99,7 @@ def filmes_editar(request, pk):
     return render(request, 'filmes/form.html', context)
 
 
-def filmes_excluir(request, pk):
-    '''Exclusão de uma postagem existente'''
-    filme = Filme.objects.get(pk=pk)
-    filme.delete()
-
-    return redirect('locacoes:filmes-index')
+class FilmeDeleteView(DeleteView):
+    """ Exclusão de um `filme` existente. """
+    model = Filme
+    success_url = reverse_lazy('locacoes:filmes-index')

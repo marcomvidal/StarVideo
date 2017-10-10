@@ -8,7 +8,7 @@ from django.utils import timezone
 
 class Cliente(models.Model):
     """
-    Clientes que locarão os filmes da locadora.
+    `Clientes` que locarão os filmes da locadora.
     """
     nome = models.CharField(max_length=255)
     data_nascimento = models.DateField()
@@ -32,7 +32,7 @@ class Cliente(models.Model):
 
 class Locacao(models.Model):
     """
-    Relaciona cliente locador, filmes e usuário que cadastrou a locação.
+    Relaciona cliente `locador`, filmes e usuário que cadastrou a locação.
     """
     data_inicio = models.DateTimeField(default=timezone.now)
     data_fim = models.DateTimeField()
@@ -53,7 +53,7 @@ class Locacao(models.Model):
 
 class StatusLocacao(models.Model):
     """
-    Define o estado da locação: 'Realizada', 'Com Pendências', 'Cancelada' e 'Finalizada'
+    Define o `estado da locação`: 'Realizada', 'Com Pendências', 'Cancelada' e 'Finalizada'
     """
     status_locacao = models.CharField(max_length=100)
     icone = models.CharField(max_length=100)
@@ -68,7 +68,7 @@ class StatusLocacao(models.Model):
 
 class Filme(models.Model):
     """
-    Reune informações sobre os filmes do acervo.
+    Reune informações sobre os `filmes` do acervo.
     """
     titulo = models.CharField(max_length=255)
     sinopse = models.TextField(blank=True, default='')
@@ -87,7 +87,7 @@ class Filme(models.Model):
 
 class Classificacao(models.Model):
     """
-    Reune informações sobre as classificações etárias de filmes.
+    Reune informações sobre as `classificações etárias` de filmes.
     """
     nome = models.CharField(max_length=255)
     idade = models.IntegerField()
@@ -104,7 +104,7 @@ class Classificacao(models.Model):
 
 class Genero(models.Model):
     """
-    Reune os gêneros de filmes.
+    Reune os `gêneros` de filmes.
     """
     genero = models.CharField(max_length=100)
 

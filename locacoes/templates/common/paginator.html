@@ -1,0 +1,37 @@
+{% block paginator %}
+<div class="text-center">
+    <nav aria-label="Page navigation">
+            <ul class="pagination">
+              {% if page_obj.has_previous %}
+              <li>
+                <a href="?campo_busca={{ busca }}&page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% else %}
+              <li class="disabled">
+                <a href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+              {% endif %}
+              {% for page in page_obj.paginator.page_range %}
+              <li {% if page == page_obj.number %}class="active"{% endif %}><a href="?campo_busca={{ busca }}&page={{ page }}">{{ page }}</a></li>
+              {% endfor %}
+              <li>
+                {% if page_obj.has_next %}
+                <a href="?campo_busca={{ busca }}&page={{ page_obj.next_page_number }}" aria-label="Next">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+                {% else %}
+                <li class="disabled">
+                  <a href="#" aria-label="Next">
+                      <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {% endif %}
+              </li>
+            </ul>
+    </nav>
+</div>
+{% endblock paginator %}
