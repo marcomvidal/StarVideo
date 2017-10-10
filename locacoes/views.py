@@ -4,6 +4,8 @@ Views: App 'locacoes'
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.db.models import Q
 
@@ -22,9 +24,9 @@ class FilmeListView(ListView):
 
 def filmes_buscar(request):
     """ Exibição dos `filmes` que contenham um dado título. """
-    busca       = request.GET.get('campo_busca')
-    filmes      = Filme.objects.filter(Q(titulo__icontains=busca)).order_by('titulo')
-    paginator   = Paginator(filmes, 8) # Mostrar 8 filmes por página
+    busca = request.GET.get('campo_busca')
+    filmes = Filme.objects.filter(Q(titulo__icontains=busca)).order_by('titulo')
+    paginator = Paginator(filmes, 8) # Mostrar 8 filmes por página
 
     page = request.GET.get('page')
     try:
@@ -46,8 +48,9 @@ class FilmeDetailView(DetailView):
     """ Exibição detalhada e sem edição de um `filme`. """
     model = Filme
     template_name = 'filmes/detail.html'
-     
+   
 
+@login_required
 def filmes_criar(request):
     """ Cadastro de `filmes`. """
     generos = Genero.objects.all()
@@ -72,6 +75,7 @@ def filmes_criar(request):
     return render(request, 'filmes/form.html', context)
 
 
+@login_required
 def filmes_editar(request, pk):
     """ Edição de um `filme` existente. """
     filme = get_object_or_404(Filme, pk=pk)
@@ -99,6 +103,7 @@ def filmes_editar(request, pk):
     return render(request, 'filmes/form.html', context)
 
 
+@method_decorator(login_required, name='dispatch')
 class FilmeDeleteView(DeleteView):
     """ Exclusão de um `filme` existente. """
     model = Filme
