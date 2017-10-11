@@ -2,13 +2,14 @@
 Forms: App 'locacoes'
 """
 from django import forms
-from .models import Filme, Classificacao, Genero
+from .models import Filme, Cliente
 
 
 class FilmeForm(forms.ModelForm):
+    """ Formulário do model `Filme`. """
     data_lancamento = forms.DateTimeField(required=False)
-    capa            = forms.ImageField(required=False)
-    blockbuster     = forms.BooleanField(required=False, initial=True)
+    capa = forms.ImageField(required=False)
+    blockbuster = forms.BooleanField(required=False, initial=True)
 
     class Meta:
         model = Filme
@@ -20,4 +21,32 @@ class FilmeForm(forms.ModelForm):
                   'capa',
                   'classificacao',
                   'genero',
-                  )
+                 )
+
+
+class ClienteForm(forms.ModelForm):
+    """ Formulário do model `Cliente`. """
+    data_nascimento = forms.DateTimeField()
+    rg = forms.CharField(required=False, min_length=9)
+    cpf = forms.CharField(required=False, min_length=9)
+    complemento = forms.CharField(required=False)
+    email = forms.CharField(required=False)
+    foto = forms.ImageField(required=False)
+    banido = forms.BooleanField(required=False, initial=False)
+
+    class Meta:
+        model = Cliente
+        fields = ('nome',
+                  'data_nascimento',
+                  'rg',
+                  'cpf',
+                  'foto',
+                  'endereco',
+                  'numero',
+                  'complemento',
+                  'cep',
+                  'ddd',
+                  'telefone',
+                  'email',
+                  'banido',
+                 )

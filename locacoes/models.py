@@ -12,10 +12,9 @@ class Cliente(models.Model):
     """
     nome = models.CharField(max_length=255)
     data_nascimento = models.DateField()
-    sexo = models.CharField(max_length=1, validators=[MinLengthValidator(1)])
     rg = models.CharField(max_length=9, validators=[MinLengthValidator(9)])
     cpf = models.CharField(max_length=11, validators=[MinLengthValidator(9)])
-    foto = models.CharField(max_length=255)
+    foto = models.ImageField(upload_to='clientes/', blank=True, default='')
     endereco = models.CharField(max_length=255)
     numero = models.CharField(max_length=10)
     complemento = models.CharField(max_length=50)

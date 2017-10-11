@@ -66,7 +66,7 @@
             <form id="formulario_exclusao" action="{% url 'locacoes:filmes-excluir' pk=filme.pk %}" method="POST" accept-charset="utf-8">
                 {% csrf_token %}
                 <a class="btn btn-default" href="{% url 'locacoes:filmes-editar' pk=filme.pk  %}"><i class="fa fa-edit"></i> Editar</a>
-                <button type="submit" class="btn btn-danger" href="{% url 'locacoes:filmes-excluir' pk=filme.pk  %}"><i class="fa fa-close"></i> Excluir</a>
+                <button type="submit" class="btn btn-danger"><i class="fa fa-close"></i> Excluir</a></button>
             </form>
         </div>
     </div>

@@ -9,10 +9,13 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.db.models import Q
 
-from .models import Filme, Classificacao, Genero
-from .forms import FilmeForm
+from .models import Filme, Classificacao, Genero, Cliente
+from .forms import FilmeForm, ClienteForm
 
 
+##############################################################################################################
+# Módulo de Filmes
+##############################################################################################################
 class FilmeListView(ListView):
     """ Exibição de todos os `filmes` cadastrados. """
     model = Filme
@@ -48,13 +51,14 @@ class FilmeDetailView(DetailView):
     """ Exibição detalhada e sem edição de um `filme`. """
     model = Filme
     template_name = 'filmes/detail.html'
-   
+
 
 @login_required
 def filmes_criar(request):
     """ Cadastro de `filmes`. """
     generos = Genero.objects.all()
     classificacoes = Classificacao.objects.all()
+    form = FilmeForm()
 
     if request.method == 'POST':
         form = FilmeForm(request.POST, request.FILES)
@@ -65,13 +69,12 @@ def filmes_criar(request):
             filme.save()
             return redirect('locacoes:filmes-index')
 
-    form = FilmeForm()
-
     context = {
         'form': form,
         'generos': generos,
         'classificacoes': classificacoes,
     }
+
     return render(request, 'filmes/form.html', context)
 
 
@@ -108,3 +111,73 @@ class FilmeDeleteView(DeleteView):
     """ Exclusão de um `filme` existente. """
     model = Filme
     success_url = reverse_lazy('locacoes:filmes-index')
+
+
+##############################################################################################################
+# Módulo de Clientes
+##############################################################################################################
+class ClienteListView(ListView):
+    """ Exibição de todos os `clientes` cadastrados. """
+    model = Cliente
+    template_name = 'clientes/index.html'
+    paginate_by = 8
+    context_object_name = 'clientes'
+    ordering = ['nome']
+
+
+class ClienteDetailView(DetailView):
+    """ Exibição detalhada e sem edição de um `cliente`. """
+    model = Cliente
+    template_name = 'clientes/detail.html'
+
+
+@login_required
+def clientes_criar(request):
+    """ Cadastro de `filmes`. """
+    form = ClienteForm()
+
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            cliente = form.save(commit=False)
+            cliente.usuario = request.user
+            cliente.save()
+            return redirect('locacoes:clientes-index')
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'clientes/form.html', context)
+
+
+@login_required
+def clientes_editar(request, pk):
+    """ Edição de um `cliente` existente. """
+    cliente = get_object_or_404(Cliente, pk=pk)
+
+    if request.method == 'POST':
+        form = ClienteForm(request.POST, request.FILES, instance=cliente)
+
+        if form.is_valid():
+            cliente = form.save(commit=False)
+            cliente.usuario = request.user
+            cliente.save()
+            return redirect('locacoes:clientes-index')
+    else:
+        form = ClienteForm(instance=cliente)
+
+    context = {
+        'form': form,
+        'cliente': cliente,
+    }
+
+    return render(request, 'clientes/form.html', context)
+
+
+@method_decorator(login_required, name='dispatch')
+class ClienteDeleteView(DeleteView):
+    """ Exclusão de um `filme` existente. """
+    model = Cliente
+    success_url = reverse_lazy('locacoes:clientes-index')
