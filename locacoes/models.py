@@ -19,6 +19,8 @@ class Cliente(models.Model):
     numero = models.CharField(max_length=10)
     complemento = models.CharField(max_length=50)
     cep = models.CharField(max_length=9)
+    cidade = models.CharField(max_length=255)
+    uf = models.CharField(max_length=2)
     ddd = models.CharField(max_length=2)
     telefone = models.CharField(max_length=9)
     email = models.CharField(max_length=255)

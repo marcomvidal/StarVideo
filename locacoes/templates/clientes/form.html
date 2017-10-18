@@ -20,7 +20,7 @@
 </ol>
 
 
-{% if filme is Null %}
+{% if cliente is Null %}
 <form action="{% url 'locacoes:clientes-criar' %}" method="POST" class="form" enctype="multipart/form-data">
 {% else %}
 <form action="{% url 'locacoes:clientes-editar' pk=cliente.pk %}" method="POST" class="form" enctype="multipart/form-data">
@@ -89,9 +89,19 @@
             <input name="numero" value="{{ form.numero.value|default:'' }}" id="numero" type="text" placeholder="Número" class="form-control" required>
         </div>
 
-        <div class="form-group col-md-10">
+        <div class="form-group col-md-3">
             <label for="complemento">Complemento</label>
             <input name="complemento" value="{{ form.complemento.value|default:'' }}" id="complemento" type="text" placeholder="Complemento" class="form-control">
+        </div>
+
+        <div class="form-group col-md-2">
+            <label for="uf">UF</label>
+            <input name="uf" value="{{ form.uf.value|default:'' }}" id="uf" type="text" placeholder="UF" class="form-control">
+        </div>
+
+        <div class="form-group col-md-5">
+            <label for="cidade">Cidade</label>
+            <input name="cidade" value="{{ form.cidade.value|default:'' }}" id="cidade" type="text" placeholder="Cidade" class="form-control">
         </div>
 
         <div class="form-group col-md-2">

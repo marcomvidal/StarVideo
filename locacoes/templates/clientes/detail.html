@@ -1,0 +1,109 @@
+{% extends "common/base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% block title %}Cliente: {{ cliente.nome }}{% endblock %}
+
+
+{% block body %}
+<h1>
+    <i class="fa fa-film"></i>
+    {{ cliente.nome }}
+    {% if cliente.banido is True %}
+    <i class="fa fa-ban" title="Este cliente está banido"></i>
+    {% endif %}
+    | <a class="btn btn-default" href={% url 'locacoes:clientes-editar' pk=cliente.id %}><i class="fa fa-pencil-square-o" title="Editar este cliente"></i></a>
+</h1>
+
+<p>&nbsp;</p>
+
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:clientes-index' %}">Clientes</a></li>
+    <li class="active">{{ cliente.nome }}</li>
+</ol>
+
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Informações pessoais</div>
+                <div class="panel-body">
+                        <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+                    <p><strong>Cadastrado por:</strong> {{ cliente.usuario.first_name }} {{ cliente.usuario.last_name }}</p>
+                </div>
+                    
+                <table class="table">
+                    <thead>
+                        <th class="col-md-4 text-center">Nascimento</th>
+                        <th class="col-md-4 text-center">RG</th>
+                        <th class="col-md-4 text-center">CPF</th>
+                    </thead>
+                    <tr>
+                        <td class="text-center">{{ cliente.data_nascimento|date }}</td>
+                        <td class="text-center">{{ cliente.rg }}</td>
+                        <td class="text-center">{{ cliente.cpf }}</td>
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Endereço</div>
+                <div class="panel-body">
+                    <p>{{ cliente.endereco }}, {{ cliente.numero }} {% if cliente.complemento %}- {{ cliente.complemento }}{% endif %}</p>
+                </div>
+                    
+                <table class="table">
+                    <thead>
+                        <th class="col-md-4 text-center">CEP</th>
+                        <th class="col-md-4 text-center">Cidade</th>
+                        <th class="col-md-4 text-center">UF</th>
+                    </thead>
+                    <tr>
+                        <td class="text-center">{{ cliente.cep }}</td>
+                        <td class="text-center">{{ cliente.endereco }}</td>
+                        <td class="text-center">{{ cliente.complemento }}</td>
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">Contato</div>
+                
+                    
+                <table class="table">
+                    <thead>
+                        <th class="col-md-4 text-center">Telefone</th>
+                        <th class="col-md-4 text-center">E-Mail</th>
+                    </thead>
+                    <tr>
+                        <td class="text-center">({{ cliente.ddd }}) {{ cliente.telefone }}</td>
+                        <td class="text-center">{{ cliente.email }}</td>
+                    <tr>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    {% if cliente.foto %}
+    <div class="col-md-4">
+        <div class="col-md-12">
+            <a class="thumbnail" href="{{ cliente.foto.url }}">
+                <img class="img-rounded" src="{{ cliente.foto.url }}" />
+            </a>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<hr />
+
+{% endblock %}

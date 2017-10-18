@@ -19,11 +19,7 @@
 <ol class="breadcrumb">
     <li><a href="#">Home</a></li>
     <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
-    {% if filme is not None %}
     <li class="active">{{ filme.titulo }}</li>
-    {% else %}
-    <li class="active">Novo Filme</li>
-    {% endif %}
 </ol>
 
 
@@ -33,7 +29,8 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Sinopse</div>
                 <div class="panel-body">
-                    {{ filme.sinopse|escape }}
+                    <p>{{ filme.sinopse|escape }}</p>
+                    <p><strong>Cadastrado por:</strong> {{ filme.usuario.first_name }} {{ filme.usuario.last_name }}</p>
                 </div>
                     
                 <table class="table">
