@@ -42,7 +42,7 @@
         {% if cliente.foto %}
         <div class="col-md-12">
             <a class="thumbnail vitrine-imagem" href="{% url 'locacoes:clientes-detalhes' pk=cliente.pk %}">
-                <img class="img-rounded vitrine-cliente" src="{{ cliente.foto.url }}" />
+                <img class="img-rounded vitrine-cliente" src="{{ cliente.foto.url }}" alt="Foto: {{ cliente.nome }}"/>
             </a>
         </div>
         {% endif %}
@@ -76,10 +76,12 @@
 {% endif %}
 </div>
 
+
 <!-- Paginação -->
 {% block paginator %}
     {% include "common/paginator.html" %}
 {% endblock %}
+
 
 {% endblock %}
 
