@@ -1,6 +1,7 @@
 """
 Views: App 'locacoes'
 """
+import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -123,6 +124,28 @@ class ClienteListView(ListView):
     paginate_by = 8
     context_object_name = 'clientes'
     ordering = ['nome']
+
+
+def clientes_buscar(request):
+    """ Exibição dos `clientes` que contenham um dado nome. """
+    busca = request.GET.get('campo_busca')
+    clientes = Cliente.objects.filter(Q(nome__icontains=busca)).order_by('nome')
+    paginator = Paginator(clientes, 8) # Mostrar 8 clientes por página
+
+    page = request.GET.get('page')
+    try:
+        clientes = paginator.page(page)
+    except PageNotAnInteger:
+        clientes = paginator.page(1)
+    except EmptyPage:
+        clientes = paginator.page(paginator.num_pages)
+
+    context = {
+        'clientes': clientes,
+        'busca': busca
+    }
+
+    return render(request, 'clientes/index.html', context)
 
 
 class ClienteDetailView(DetailView):

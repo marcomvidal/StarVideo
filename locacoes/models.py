@@ -4,6 +4,7 @@ Models: App 'locacoes'
 from django.db import models
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
+from datetime import date
 
 
 class Cliente(models.Model):
@@ -12,20 +13,24 @@ class Cliente(models.Model):
     """
     nome = models.CharField(max_length=255)
     data_nascimento = models.DateField()
-    rg = models.CharField(max_length=9, validators=[MinLengthValidator(9)])
-    cpf = models.CharField(max_length=11, validators=[MinLengthValidator(9)])
+    rg = models.CharField(max_length=12, validators=[MinLengthValidator(12)])
+    cpf = models.CharField(max_length=14, validators=[MinLengthValidator(14)])
     foto = models.ImageField(upload_to='clientes/', blank=True, default='')
     endereco = models.CharField(max_length=255)
     numero = models.CharField(max_length=10)
     complemento = models.CharField(max_length=50)
-    cep = models.CharField(max_length=9)
+    cep = models.CharField(max_length=10)
     cidade = models.CharField(max_length=255)
     uf = models.CharField(max_length=2)
     ddd = models.CharField(max_length=2)
-    telefone = models.CharField(max_length=9)
+    telefone = models.CharField(max_length=10)
     email = models.CharField(max_length=255)
     banido = models.BooleanField(default=False)
     usuario = models.ForeignKey('auth.User')
+
+    def idade(self):
+        hoje = date.today()
+        return hoje.year - self.data_nascimento.year - ((hoje.month, hoje.day) < (self.data_nascimento.month, self.data_nascimento.day))
 
     def __str__(self):
         return self.nome

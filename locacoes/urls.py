@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'filmes/(?P<pk>[0-9]+)/excluir/$',     views.FilmeDeleteView.as_view(),        name="filmes-excluir"),
     url(r'clientes/$',                          views.ClienteListView.as_view(),        name="clientes-index"),
     url(r'clientes/(?P<pk>[0-9]+)/$',           views.ClienteDetailView.as_view(),      name="clientes-detalhes"),
+    url(r'clientes/buscar/$',                   views.clientes_buscar,                  name="clientes-buscar"),
     url(r'clientes/novo/$',                     views.clientes_criar,                   name="clientes-criar"),
     url(r'clientes/(?P<pk>[0-9]+)/editar/$',    views.clientes_editar,                  name="clientes-editar"),
     url(r'clientes/(?P<pk>[0-9]+)/excluir/$',   views.ClienteDeleteView.as_view(),      name="clientes-excluir"),

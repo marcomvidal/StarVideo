@@ -45,6 +45,8 @@ class ClienteForm(forms.ModelForm):
                   'numero',
                   'complemento',
                   'cep',
+                  'uf',
+                  'cidade',
                   'ddd',
                   'telefone',
                   'email',

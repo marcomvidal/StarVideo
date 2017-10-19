@@ -11,7 +11,7 @@
 <ol class="breadcrumb">
     <li><a href="#">Home</a></li>
     {% if busca is not Null %}
-        <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
+        <li><a href="{% url 'locacoes:clientes-index' %}">Clientes</a></li>
         <li class="active">Resultados da busca por: "{{ busca }}"</li>
     {% else %}
         <li class="active">Clientes</li>
@@ -22,7 +22,7 @@
 
 <div class="row">
     <div class="col-md-12">
-    <form id="formulario_busca" action="{% url 'locacoes:filmes-buscar' %}" method="GET" accept-charset="utf-8">
+    <form id="formulario_busca" action="{% url 'locacoes:clientes-buscar' %}" method="GET" accept-charset="utf-8">
         <div class="input-group">
             <input type="text" name="campo_busca" class="form-control" placeholder="Por qual cliente você está procurando?">
             <div class="input-group-btn">
@@ -38,27 +38,30 @@
 {% if clientes %}
     {% for cliente in clientes %}
     
-    <div class="col-md-3 container-filme">
+    <div class="col-md-3 container-cliente">
         {% if cliente.foto %}
         <div class="col-md-12">
-            <a class="thumbnail capa-filme" href="{% url 'locacoes:clientes-detalhes' pk=cliente.pk %}">
-                <img class="img-rounded" src="{{ cliente.foto.url }}" />
+            <a class="thumbnail vitrine-imagem" href="{% url 'locacoes:clientes-detalhes' pk=cliente.pk %}">
+                <img class="img-rounded vitrine-cliente" src="{{ cliente.foto.url }}" />
             </a>
         </div>
         {% endif %}
 
         <div class="col-md-12">
-            <a href="{% url 'locacoes:clientes-detalhes' pk=cliente.pk %}"><h4 class="text-center">{{ cliente.nome }}</h4></a>
-            <p class="text-center">
+            <h4 class="text-center vitrine-titulo">
+                <a href="{% url 'locacoes:clientes-detalhes' pk=cliente.pk %}">
+                    {{ cliente.nome }}
+                </a>
                 {% if cliente.banido is True %}
                 <i class="fa fa-ban" title="Este cliente está banido"></i>
                 {% endif %}
+            </h4>
+            <p><strong>Endereço:</strong> {{ cliente.endereco }}, {{ cliente.numero }}</p>
+            <p><strong>Telefone:</strong> ({{ cliente.ddd }}) {{ cliente.telefone }}
+            <p><strong>Idade:</strong> {{ cliente.idade }} anos</p>
+            <p class="text-center">
+                
             </p>
-            <ul>
-                <li><strong>Endereço:</strong> {{ cliente.endereco }}</li>
-                <li><strong>Telefone:</strong> {{ cliente.telefone }}</li>
-                <li><strong>E-Mail:</strong> {{ cliente.email }}</li>
-            </ul>
         </div>
         <hr />
         <div class="text-center">

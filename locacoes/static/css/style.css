@@ -14,11 +14,30 @@ h1 {
 }
 
 .container-filme {
-    min-height: 575px;
+    min-height: 650px;
 }
 
-.capa-filme {
+.container-cliente {
+    min-height: 580px;
+}
+
+.vitrine-titulo {
+    min-height: 43px;
+    line-height: 20px;
+    text-align: center;
+}
+
+.vitrine-imagem {
     margin-bottom: 10px;
+    vertical-align: bottom;
+}
+
+.vitrine-filme {
+    min-height: 350px;
+}
+
+.vitrine-cliente {
+    min-height: 300px;
 }
 
 .icone-classificacao-index {

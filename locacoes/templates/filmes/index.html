@@ -41,25 +41,27 @@
     <div class="col-md-3 container-filme">
         {% if filme.capa %}
         <div class="col-md-12">
-            <a class="thumbnail capa-filme" href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
-                <img class="img-rounded" src="{{ filme.capa.url }}" />
+            <a class="thumbnail vitrine-imagem" href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
+                <img class="img-rounded vitrine-filme" src="{{ filme.capa.url }}" />
             </a>
         </div>
         {% endif %}
-
+        
         <div class="col-md-12">
-            <a href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}"><h4 class="text-center">{{ filme.titulo }}</h4></a>
-            <p class="text-center">
-                <img class="icone-classificacao-index" title="Classificação: {{ filme.classificacao.nome }}" src="{{ filme.classificacao.icone.url }}" />
+            <h4 class="text-center vitrine-titulo">
+                <a href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
+                    {{ filme.titulo }}
+                </a>
                 {% if filme.blockbuster is True %}
                 <i class="fa fa-star-o" title="Este filme é um blockbuster"></i>
                 {% endif %}
+            </h4>
+            <p><strong>Quantidade:</strong> {{ filme.quantidade }}</p>
+            <p><strong>Gênero:</strong> {{ filme.genero }}</p>
+            <p><strong>Lançamento:</strong> {{ filme.data_lancamento|date:"M/Y" }}</p>
+            <p class="text-center">
+                <img class="icone-classificacao-index" title="Classificação: {{ filme.classificacao.nome }}" src="{{ filme.classificacao.icone.url }}" />
             </p>
-            <ul>
-                <li><strong>Quantidade:</strong> {{ filme.quantidade }}</li>
-                <li><strong>Gênero:</strong> {{ filme.genero }}</li>
-                <li><strong>Lançamento:</strong> {{ filme.data_lancamento|date:"M/Y" }}</li>
-            </ul>
         </div>
         <hr />
         <div class="text-center">
