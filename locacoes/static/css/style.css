@@ -49,3 +49,8 @@ h1 {
     max-height: 30px;
     max-width: 30px;
 }
+
+.titulo-painel-locacao {
+    padding-top: 7px;
+    padding-left: 0px;
+}

@@ -2,7 +2,7 @@
 Forms: App 'locacoes'
 """
 from django import forms
-from .models import Filme, Cliente
+from .models import Filme, Cliente, Locacao
 
 
 class FilmeForm(forms.ModelForm):
@@ -51,4 +51,22 @@ class ClienteForm(forms.ModelForm):
                   'telefone',
                   'email',
                   'banido',
+                 )
+
+class LocacaoForm(forms.ModelForm):
+    """ Formulário do model `Locação`. """
+    data_inicio = forms.DateTimeField(required=True)
+    data_fim = forms.DateTimeField(required=True)
+    pago = forms.BooleanField(required=False, initial=False)
+    multa = forms.BooleanField(required=False, initial=False)
+
+    class Meta:
+        model = Locacao
+        fields = ('data_inicio',
+                  'data_fim',
+                  'pago',
+                  'multa',
+                  'preco',
+                  'cliente',
+                  'status_locacao',
                  )

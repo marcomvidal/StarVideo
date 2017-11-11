@@ -1,0 +1,129 @@
+{% extends "common/base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% block title %}Cadastro de Locações{% endblock %}
+
+
+{% block body %}
+<h1><i class="fa fa-cart-plus"></i> Cadastro de Locações</h1>
+
+<p>&nbsp;</p>
+
+<ol class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:filmes-index' %}">Locações</a></li>
+    {% if locacao is not None %}
+    <li class="active">Editando: </li>
+    {% else %}
+    <li class="active">Nova Locação</li>
+    {% endif %}
+</ol>
+
+
+{% if filme is Null %}
+<form action="{% url 'locacoes:locacoes-criar' %}" method="POST" class="form" enctype="multipart/form-data">
+{% else %}
+<form action="{% url 'locacoes:locacoes-editar' pk=locacao.pk %}" method="POST" class="form" enctype="multipart/form-data">
+{% endif %}
+
+
+{% csrf_token %}
+<div class="row">
+
+    {% bootstrap_form_errors form error_types=all %}
+
+    <div class="col-md-12">
+        <div class="form-group col-md-3">
+            <label for="data_inicio">Data de Início</label>
+            <input name="data_inicio" value="{{ form.data_inicio.value|date:"Y-m-d"|default:'' }}" id="data_inicio" type="date" placeholder="Data de Lançamento" class="form-control">
+            {% if form.data_inicio.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.data_inicio.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-3">
+            <label for="data_fim">Data de Término</label>
+            <input name="data_fim" value="{{ form.data_fim.value|date:"Y-m-d"|default:'' }}" id="data_fim" type="date" placeholder="Data de Lançamento" class="form-control">
+            {% if form.data_fim.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.data_fim.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-6">
+            <label for="status_locacao">Status da Locação</label>
+            <select name="status_locacao" id="status_locacao" class="form-control" required>
+            {% for status_locacao in status_locacoes %}
+                <option value="{{ status_locacao.id }}" {% if status_locacao.id == filme.status_locacao.id %} selected {% endif %}>{{ status_locacao }}</option>
+            {% endfor %}
+            </select>
+            {% if form.status_locacao.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.status_locacao.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-6">
+            <label for="id_pago">{{ form.pago }} Esta locação já foi paga?</label>
+        </div>
+
+        <div class="col-md-6">
+            <label for="id_multa">{{ form.multa }} Aplicar multa a esta locação?</label>
+        </div>
+
+        <div class="col-md-12">
+            <hr />
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading col-md-12">
+                    <h3 class="panel-title col-md-11 titulo-painel-locacao">
+                        Cliente locador
+                    </h3>
+
+                    <a class="col-md-1 panel-title btn btn-default">
+                        <i class="fa fa-plus" title="Adicionar cliente"></i>
+                    </a>
+                </div>
+                <div class="panel-body">
+                    &nbsp;
+                    <p>Ainda não foi selecionado um cliente para esta locação.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading col-md-12">
+                    <h3 class="panel-title col-md-11 titulo-painel-locacao">
+                        Filmes desta locação
+                    </h3>
+
+                    <a class="col-md-1 panel-title btn btn-default">
+                        <i class="fa fa-plus"  title="Adicionar um filme"></i>
+                    </a>
+                </div>
+                <div class="panel-body">
+                    &nbsp;
+                    <p>Por enquanto, nenhum filme foi adicionado a esta locação.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr />
+
+{% block save_form %}
+    {% include "common/save_form.html" %}
+{% endblock %}
+</form>
+
+
+{% endblock %}

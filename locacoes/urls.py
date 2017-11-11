@@ -21,4 +21,6 @@ urlpatterns = [
     url(r'clientes/novo/$',                     views.clientes_criar,                   name="clientes-criar"),
     url(r'clientes/(?P<pk>[0-9]+)/editar/$',    views.clientes_editar,                  name="clientes-editar"),
     url(r'clientes/(?P<pk>[0-9]+)/excluir/$',   views.ClienteDeleteView.as_view(),      name="clientes-excluir"),
+    url(r'locacoes/novo/$',                     views.locacoes_criar,                   name="locacoes-criar"),
+    url(r'locacoes/(?P<pk>[0-9]+)/editar/$',    views.locacoes_criar,                   name="locacoes-editar"),
 ]

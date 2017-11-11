@@ -50,7 +50,7 @@ class Locacao(models.Model):
     status_locacao = models.ForeignKey('locacoes.StatusLocacao')
 
     def __str__(self):
-        return self.usuario+", "+self.data_inicio
+        return self.usuario + ", " + self.data_inicio
 
     class Meta:
         verbose_name = 'Locação'

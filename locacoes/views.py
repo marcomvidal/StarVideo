@@ -1,7 +1,6 @@
 """
 Views: App 'locacoes'
 """
-import re
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView, DetailView, DeleteView
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -10,8 +9,8 @@ from django.utils.decorators import method_decorator
 from django.urls import reverse_lazy
 from django.db.models import Q
 
-from .models import Filme, Classificacao, Genero, Cliente
-from .forms import FilmeForm, ClienteForm
+from .models import Filme, Classificacao, Genero, Cliente, Locacao, StatusLocacao
+from .forms import FilmeForm, ClienteForm, LocacaoForm
 
 
 ##############################################################################################################
@@ -204,3 +203,48 @@ class ClienteDeleteView(DeleteView):
     """ Exclusão de um `filme` existente. """
     model = Cliente
     success_url = reverse_lazy('locacoes:clientes-index')
+
+
+##############################################################################################################
+# Módulo de Locações
+##############################################################################################################
+@login_required
+def locacoes_criar(request):
+    """ Cadastro de `locações`. """
+    form = LocacaoForm()
+    status_locacoes = StatusLocacao.objects.all()
+
+    if request.method == 'POST':
+        form = LocacaoForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            locacao = form.save(commit=False)
+            locacao.usuario = request.user
+            locacao.save()
+            return redirect('locacoes:locacoes-index')
+
+    context = {
+        'form': form,
+        'status_locacoes': status_locacoes,
+    }
+
+    return render(request, 'locacoes/form.html', context)
+
+
+@login_required
+def locacoes_addcliente(request):
+    """
+    Salva as informações da `locação` feitas até o momento e redireciona o usuário
+    para a página de seleção de cliente.
+    """
+    form = LocacaoForm(request.POST)
+    locacao = form.save(commit=False)
+    locacao.usuario = request.user
+    locacao.save()
+
+    return redirect('locacoes:locacoes-selcliente', pk=locacao.pk)
+
+
+@login_required
+def locacoes_selcliente(request, pk):
+    pass

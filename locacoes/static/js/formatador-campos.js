@@ -1,4 +1,4 @@
-(function(){
+(function() {
     // Permutador de máscaras
     function inputHandler(masks, max, event) {
         var c = event.target;
@@ -23,5 +23,4 @@
       var tel = document.querySelector('#telefone');
       VMasker(tel).maskPattern(telMask[0]);
       tel.addEventListener('input', inputHandler.bind(undefined, telMask, 9), false);
-    
 })();
