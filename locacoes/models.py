@@ -44,8 +44,8 @@ class Locacao(models.Model):
     data_fim = models.DateTimeField()
     pago = models.BooleanField(default=False)
     multa = models.DecimalField(max_digits=5, decimal_places=2)
-    preco = models.DecimalField(max_digits=5, decimal_places=2)
-    cliente = models.ForeignKey('locacoes.Cliente')
+    preco = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    cliente = models.ForeignKey('locacoes.Cliente', null=True)
     usuario = models.ForeignKey('auth.User')
     status_locacao = models.ForeignKey('locacoes.StatusLocacao')
 

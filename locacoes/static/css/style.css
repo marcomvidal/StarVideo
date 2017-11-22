@@ -40,6 +40,11 @@ h1 {
     min-height: 300px;
 }
 
+.vitrine-locacao-cliente {
+    max-height: 150px;
+    max-width: 150px;
+}
+
 .icone-classificacao-index {
     max-height: 25px;
     max-width: 25px;

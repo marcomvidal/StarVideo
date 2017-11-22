@@ -4,7 +4,7 @@
 {% block title %}Adicionar Cliente{% endblock %}
 
 {% block body %}
-<h1><i class="fa fa-film"></i> Adicionar Cliente | <a class="btn btn-default" href="{% url 'locacoes:clientes-criar' %}" title="Adicionar um novo cliente ao cadastro."><i class="fa fa-plus"></i></a></h1>
+<h1><i class="fa fa-cart-plus"></i> Selecione um Cliente para a Locação</h1>
 
 <p>&nbsp;</p>
 
@@ -14,7 +14,8 @@
         <li><a href="{% url 'locacoes:clientes-index' %}">Clientes</a></li>
         <li class="active">Resultados da busca por: "{{ busca }}"</li>
     {% else %}
-        <li class="active">Clientes</li>
+        <li><a href="{% url 'locacoes:locacoes-editar' pk=locacao.pk %}">Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</a></li>
+        <li class="active">Escolher cliente</li>
     {% endif %}
 </ol>
 
@@ -65,10 +66,10 @@
         </div>
         <hr />
         <div class="text-center">
-            <form id="formulario_exclusao" action="{% url 'locacoes:clientes-excluir' pk=cliente.pk %}" method="POST" accept-charset="utf-8">
+            <form id="formulario_exclusao" action="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" method="POST" accept-charset="utf-8">
                 {% csrf_token %}
-                <a class="btn btn-default" href="{% url 'locacoes:clientes-editar' pk=cliente.pk  %}"><i class="fa fa-edit"></i> Editar</a>
-                <button type="submit" class="btn btn-danger"><i class="fa fa-close"></i> Excluir</a></button>
+                <input name="cliente" value="{{ cliente.id }}" type="hidden"></input>
+                <button type="submit" class="btn btn-default"><i class="fa fa-hand-pointer-o"></i> Selecionar</a></button>
             </form>
         </div>
     </div>

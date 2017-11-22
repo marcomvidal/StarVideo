@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 
 from .models import Filme, Classificacao, Genero, Cliente, Locacao, StatusLocacao
-from .forms import FilmeForm, ClienteForm, LocacaoForm
+from .forms import FilmeForm, ClienteForm, LocacaoForm, LocacaoClienteForm
 
 
 ##############################################################################################################
@@ -130,8 +130,8 @@ def clientes_buscar(request):
     busca = request.GET.get('campo_busca')
     clientes = Cliente.objects.filter(Q(nome__icontains=busca)).order_by('nome')
     paginator = Paginator(clientes, 8) # Mostrar 8 clientes por página
-
     page = request.GET.get('page')
+    
     try:
         clientes = paginator.page(page)
     except PageNotAnInteger:
@@ -215,13 +215,13 @@ def locacoes_criar(request):
     status_locacoes = StatusLocacao.objects.all()
 
     if request.method == 'POST':
-        form = LocacaoForm(request.POST, request.FILES)
+        form = LocacaoForm(request.POST)
 
         if form.is_valid():
             locacao = form.save(commit=False)
             locacao.usuario = request.user
             locacao.save()
-            return redirect('locacoes:locacoes-index')
+            return redirect('locacoes:locacoes-editar', pk=locacao.pk)
 
     context = {
         'form': form,
@@ -232,17 +232,55 @@ def locacoes_criar(request):
 
 
 @login_required
-def locacoes_addcliente(request):
-    """
-    Salva as informações da `locação` feitas até o momento e redireciona o usuário
-    para a página de seleção de cliente.
-    """
-    form = LocacaoForm(request.POST)
-    locacao = form.save(commit=False)
-    locacao.usuario = request.user
-    locacao.save()
+def locacoes_editar(request, pk):
+    """ Edição de uma `locação` existente. """
+    locacao = get_object_or_404(Locacao, pk=pk)
+    status_locacoes = StatusLocacao.objects.all()
 
-    return redirect('locacoes:locacoes-selcliente', pk=locacao.pk)
+    if request.method == 'POST':
+        form = LocacaoForm(request.POST, instance=locacao)
+
+        if form.is_valid():
+            locacao = form.save(commit=False)
+            locacao.usuario = request.user
+            locacao.save()
+            return redirect('locacoes:locacoes-editar', pk=locacao.pk)
+    else:
+        form = LocacaoForm(instance=locacao)
+
+    context = {
+        'form': form,
+        'locacao': locacao,
+        'status_locacoes': status_locacoes,
+    }
+
+    return render(request, 'locacoes/form.html', context)
+
+
+@login_required
+def locacoes_addcliente(request, pk):
+    """
+    Direciona o usuário para selecionar um `cliente` para sua locação
+    e persiste esta informação no banco de dados.
+    """
+    locacao = get_object_or_404(Locacao, pk=pk)
+    clientes = Cliente.objects.exclude(banido__exact = 1)
+    form = LocacaoClienteForm()
+    
+    if request.method == 'POST':
+        form = LocacaoClienteForm(request.POST, instance=locacao)
+
+        if form.is_valid():
+            locacao = form.save()
+            return redirect('locacoes:locacoes-editar', pk=locacao.pk)
+
+    context = {
+        'locacao': locacao,
+        'clientes': clientes,
+        'form': form,
+    }
+
+    return render(request, 'locacoes/clientes.html', context)
 
 
 @login_required

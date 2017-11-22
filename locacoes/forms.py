@@ -13,7 +13,8 @@ class FilmeForm(forms.ModelForm):
 
     class Meta:
         model = Filme
-        fields = ('titulo',
+        fields = (
+                  'titulo',
                   'sinopse',
                   'quantidade',
                   'data_lancamento',
@@ -36,7 +37,8 @@ class ClienteForm(forms.ModelForm):
 
     class Meta:
         model = Cliente
-        fields = ('nome',
+        fields = (
+                  'nome',
                   'data_nascimento',
                   'rg',
                   'cpf',
@@ -62,11 +64,19 @@ class LocacaoForm(forms.ModelForm):
 
     class Meta:
         model = Locacao
-        fields = ('data_inicio',
+        fields = (
+                  'data_inicio',
                   'data_fim',
                   'pago',
                   'multa',
-                  'preco',
-                  'cliente',
                   'status_locacao',
+                 )
+
+class LocacaoClienteForm(forms.ModelForm):
+    """ Formulário para seleção do `cliente` para a `locação`. """
+
+    class Meta:
+        model = Locacao
+        fields = (
+                  'cliente',
                  )

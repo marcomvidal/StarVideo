@@ -5,7 +5,11 @@
 
 
 {% block body %}
+{% if locacao is not Null %}
+    <h1><i class="fa fa-cart-plus"></i> Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</h1>
+{% else %}
 <h1><i class="fa fa-cart-plus"></i> Cadastro de Locações</h1>
+{% endif %}
 
 <p>&nbsp;</p>
 
@@ -13,29 +17,34 @@
     <li><a href="#">Home</a></li>
     <li><a href="{% url 'locacoes:filmes-index' %}">Locações</a></li>
     {% if locacao is not None %}
-    <li class="active">Editando: </li>
+    <li class="active">Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</li>
     {% else %}
     <li class="active">Nova Locação</li>
     {% endif %}
 </ol>
 
 
-{% if filme is Null %}
-<form action="{% url 'locacoes:locacoes-criar' %}" method="POST" class="form" enctype="multipart/form-data">
-{% else %}
-<form action="{% url 'locacoes:locacoes-editar' pk=locacao.pk %}" method="POST" class="form" enctype="multipart/form-data">
-{% endif %}
-
-
-{% csrf_token %}
 <div class="row">
 
     {% bootstrap_form_errors form error_types=all %}
 
     <div class="col-md-12">
+    {% if locacao is Null %}
+    <form action="{% url 'locacoes:locacoes-criar' %}" method="POST" class="form" enctype="multipart/form-data">
+    {% else %}
+    <form action="{% url 'locacoes:locacoes-editar' pk=locacao.pk %}" method="POST" class="form" enctype="multipart/form-data">
+    {% endif %}
+    {% csrf_token %}
+
+        {% if locacao is None %}
+        <div class="col-md-12">
+            <div class="well well-sm"><strong>Olá!</strong> Comece digitando as informações deste bloco e salvando.</div>
+        </div>
+        {% endif %}
+        
         <div class="form-group col-md-3">
             <label for="data_inicio">Data de Início</label>
-            <input name="data_inicio" value="{{ form.data_inicio.value|date:"Y-m-d"|default:'' }}" id="data_inicio" type="date" placeholder="Data de Lançamento" class="form-control">
+            <input name="data_inicio" value="{{ form.data_inicio.value|date:"Y-m-d"|default:'' }}" id="data_inicio" type="date" placeholder="Data de Início" class="form-control">
             {% if form.data_inicio.errors %}
             <div class="alert alert-danger">
                 <strong>{{ form.data_inicio.errors|striptags }}</strong>
@@ -45,7 +54,7 @@
 
         <div class="form-group col-md-3">
             <label for="data_fim">Data de Término</label>
-            <input name="data_fim" value="{{ form.data_fim.value|date:"Y-m-d"|default:'' }}" id="data_fim" type="date" placeholder="Data de Lançamento" class="form-control">
+            <input name="data_fim" value="{{ form.data_fim.value|date:"Y-m-d"|default:'' }}" id="data_fim" type="date" placeholder="Data de Término" class="form-control">
             {% if form.data_fim.errors %}
             <div class="alert alert-danger">
                 <strong>{{ form.data_fim.errors|striptags }}</strong>
@@ -53,7 +62,17 @@
             {% endif %}
         </div>
 
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-3">
+            <label for="multa">Multa</label>
+            <input name="multa" value="{{ form.multa.value|default:'' }}" id="multa" type="number" placeholder="Valor da Multa" class="form-control">
+            {% if form.multa.errors %}
+            <div class="alert alert-danger">
+                <strong>{{ form.multa.errors|striptags }}</strong>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group col-md-3">
             <label for="status_locacao">Status da Locação</label>
             <select name="status_locacao" id="status_locacao" class="form-control" required>
             {% for status_locacao in status_locacoes %}
@@ -67,17 +86,29 @@
             {% endif %}
         </div>
 
-        <div class="col-md-6">
+        <div class="col-md-12">
             <label for="id_pago">{{ form.pago }} Esta locação já foi paga?</label>
         </div>
 
-        <div class="col-md-6">
-            <label for="id_multa">{{ form.multa }} Aplicar multa a esta locação?</label>
+        <div class="col-md-12 text-center">
+            &nbsp;
         </div>
+
+        <div class="col-md-12 text-center">
+            <button type="submit" class="btn btn-default"><i class="fa fa-check"></i> Salvar e prosseguir</button>
+        </div>
+
+    </form>
 
         <div class="col-md-12">
             <hr />
         </div>
+
+        {% if locacao is not None %}
+        <div class="col-md-12">
+            <div class="well well-sm"><strong>Ótimo!</strong> Agora selecione o cliente que realizará a locação e os filmes que serão alugados.</div>
+        </div>
+        {% endif %}
 
         <div class="col-md-12">
             <div class="panel panel-default">
@@ -86,13 +117,50 @@
                         Cliente locador
                     </h3>
 
-                    <a class="col-md-1 panel-title btn btn-default">
-                        <i class="fa fa-plus" title="Adicionar cliente"></i>
-                    </a>
+                    {% if locacao is not None %}
+                        {% if locacao.cliente is None %}
+                        <a href="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" class="col-md-1 panel-title btn btn-default">
+                            <i class="fa fa-plus" title="Adicionar cliente"></i>
+                        </a>
+                        {% else %}
+                        <a href="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" class="col-md-1 panel-title btn btn-default">
+                            <i class="fa fa-edit" title="Trocar cliente"></i>
+                        </a>
+                        {% endif %}
+                    {% endif %}
                 </div>
                 <div class="panel-body">
                     &nbsp;
+                    {% if locacao.cliente is None %}
                     <p>Ainda não foi selecionado um cliente para esta locação.</p>
+                    {% else %}
+
+                    <div class="col-md-12">
+                        <p></p>
+                    </div>
+
+                    <div class="col-md-2">
+                        <a class="thumbnail" href="{% url 'locacoes:clientes-detalhes' pk=locacao.cliente.id %}">
+                            <img class="img-rounded vitrine-locacao-cliente" src="{{ locacao.cliente.foto.url }}" alt="Foto: {{ locacao.cliente.nome }}"/>
+                        </a>
+                    </div>
+                    <div class="col-md-10">
+                        <p><strong>{{ locacao.cliente.nome }}</strong></p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>RG:</strong> {{ locacao.cliente.rg }}</p>
+                        <p><strong>CPF:</strong> {{ locacao.cliente.cpf }}</p>
+                        <p><strong>Idade:</strong> {{ locacao.cliente.idade }} anos</p>
+                        <p><strong>Telefone:</strong> ({{ locacao.cliente.ddd }}) {{ locacao.cliente.telefone }}
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Endereço:</strong></p>
+                        <p>{{ locacao.cliente.endereco }}, {{ locacao.cliente.numero }} {% if locacao.cliente.complemento %} - {{ locacao.cliente.complemento }} {% endif %}</p>
+                        <p><strong>CEP:</strong> {{ locacao.cliente.cep }}</p>
+                        <p><strong>Cidade:</strong> {{ locacao.cliente.cidade }} /  {{ locacao.cliente.uf }}</p>
+                    </div>
+
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -104,9 +172,11 @@
                         Filmes desta locação
                     </h3>
 
+                    {% if locacao is not None %}
                     <a class="col-md-1 panel-title btn btn-default">
                         <i class="fa fa-plus"  title="Adicionar um filme"></i>
                     </a>
+                    {% endif %}
                 </div>
                 <div class="panel-body">
                     &nbsp;
@@ -119,11 +189,6 @@
 </div>
 
 <hr />
-
-{% block save_form %}
-    {% include "common/save_form.html" %}
-{% endblock %}
-</form>
 
 
 {% endblock %}
