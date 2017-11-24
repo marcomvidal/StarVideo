@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'locacoes/novo/$',                     views.locacoes_criar,                   name="locacoes-criar"),
     url(r'locacoes/(?P<pk>[0-9]+)/editar/$',    views.locacoes_editar,                  name="locacoes-editar"),
     url(r'locacoes/(?P<pk>[0-9]+)/cliente/$',   views.locacoes_addcliente,              name="locacoes-addcliente"),
+    url(r'locacoes/(?P<pk>[0-9]+)/filme/$',     views.locacoes_addfilme,                name="locacoes-addfilme"),
 ]

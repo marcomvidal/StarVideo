@@ -80,3 +80,12 @@ class LocacaoClienteForm(forms.ModelForm):
         fields = (
                   'cliente',
                  )
+
+class LocacaoFilmeForm(forms.ModelForm):
+    """ Formulário para seleção do `filme` para a `locação`. """
+
+    class Meta:
+        model = Locacao
+        fields = (
+                  'filmes',
+                 )

@@ -10,7 +10,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 
 from .models import Filme, Classificacao, Genero, Cliente, Locacao, StatusLocacao
-from .forms import FilmeForm, ClienteForm, LocacaoForm, LocacaoClienteForm
+from .forms import FilmeForm, ClienteForm, LocacaoForm, LocacaoClienteForm, LocacaoFilmeForm
 
 
 ##############################################################################################################
@@ -30,8 +30,8 @@ def filmes_buscar(request):
     busca = request.GET.get('campo_busca')
     filmes = Filme.objects.filter(Q(titulo__icontains=busca)).order_by('titulo')
     paginator = Paginator(filmes, 8) # Mostrar 8 filmes por página
-
     page = request.GET.get('page')
+
     try:
         filmes = paginator.page(page)
     except PageNotAnInteger:
@@ -266,6 +266,15 @@ def locacoes_addcliente(request, pk):
     locacao = get_object_or_404(Locacao, pk=pk)
     clientes = Cliente.objects.exclude(banido__exact = 1)
     form = LocacaoClienteForm()
+    paginator = Paginator(clientes, 8) # Mostrar 8 clientes por página
+    page = request.GET.get('page')
+    
+    try:
+        clientes = paginator.page(page)
+    except PageNotAnInteger:
+        clientes = paginator.page(1)
+    except EmptyPage:
+        clientes = paginator.page(paginator.num_pages)
     
     if request.method == 'POST':
         form = LocacaoClienteForm(request.POST, instance=locacao)
@@ -276,7 +285,7 @@ def locacoes_addcliente(request, pk):
 
     context = {
         'locacao': locacao,
-        'clientes': clientes,
+        'page_obj': clientes,
         'form': form,
     }
 
@@ -284,5 +293,35 @@ def locacoes_addcliente(request, pk):
 
 
 @login_required
-def locacoes_selcliente(request, pk):
-    pass
+def locacoes_addfilme(request, pk):
+    """
+    Direciona o usuário para selecionar um `filme` para sua locação
+    e persiste esta informação no banco de dados
+    """
+    locacao = get_object_or_404(Locacao, pk=pk)
+    filmes = Filme.objects.all()
+    form = LocacaoFilmeForm()
+    paginator = Paginator(filmes, 8) # Mostrar 8 filmes por página
+    page = request.GET.get('page')
+    
+    try:
+        filmes = paginator.page(page)
+    except PageNotAnInteger:
+        filmes = paginator.page(1)
+    except EmptyPage:
+        filmes = paginator.page(paginator.num_pages)
+
+    if request.method == 'POST':
+        form = LocacaoFilmeForm(request.POST, instance=locacao)
+        filme = Filme.objects.get(pk=request.POST['filme'])
+        locacao.save()
+        locacao.filmes.add(filme)
+        return redirect('locacoes:locacoes-editar', pk=locacao.pk)
+
+    context = {
+        'locacao': locacao,
+        'page_obj': filmes,
+        'form': form,
+    }
+
+    return render(request, 'locacoes/filmes.html', context)

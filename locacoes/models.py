@@ -36,42 +36,6 @@ class Cliente(models.Model):
         return self.nome
 
 
-class Locacao(models.Model):
-    """
-    Relaciona cliente `locador`, filmes e usuário que cadastrou a locação.
-    """
-    data_inicio = models.DateTimeField(default=timezone.now)
-    data_fim = models.DateTimeField()
-    pago = models.BooleanField(default=False)
-    multa = models.DecimalField(max_digits=5, decimal_places=2)
-    preco = models.DecimalField(max_digits=5, decimal_places=2, null=True)
-    cliente = models.ForeignKey('locacoes.Cliente', null=True)
-    usuario = models.ForeignKey('auth.User')
-    status_locacao = models.ForeignKey('locacoes.StatusLocacao')
-
-    def __str__(self):
-        return self.usuario + ", " + self.data_inicio
-
-    class Meta:
-        verbose_name = 'Locação'
-        verbose_name_plural = 'Locações'
-
-
-class StatusLocacao(models.Model):
-    """
-    Define o `estado da locação`: 'Realizada', 'Com Pendências', 'Cancelada' e 'Finalizada'
-    """
-    status_locacao = models.CharField(max_length=100)
-    icone = models.CharField(max_length=100)
-
-    def __str__(self):
-        return self.status_locacao
-
-    class Meta:
-        verbose_name = 'Status da Locação'
-        verbose_name_plural = 'Status das Locações'
-
-
 class Filme(models.Model):
     """
     Reune informações sobre os `filmes` do acervo.
@@ -85,7 +49,6 @@ class Filme(models.Model):
     usuario = models.ForeignKey('auth.User')
     classificacao = models.ForeignKey('locacoes.Classificacao')
     genero = models.ForeignKey('locacoes.Genero')
-    locacoes = models.ManyToManyField(Locacao)
 
     def __str__(self):
         return self.titulo
@@ -119,3 +82,40 @@ class Genero(models.Model):
 
     class Meta:
         verbose_name = 'Gênero'
+
+
+class Locacao(models.Model):
+    """
+    Relaciona cliente `locador`, filmes e usuário que cadastrou a locação.
+    """
+    data_inicio = models.DateTimeField(default=timezone.now)
+    data_fim = models.DateTimeField()
+    pago = models.BooleanField(default=False)
+    multa = models.DecimalField(max_digits=5, decimal_places=2)
+    preco = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    cliente = models.ForeignKey('locacoes.Cliente', null=True)
+    usuario = models.ForeignKey('auth.User')
+    status_locacao = models.ForeignKey('locacoes.StatusLocacao')
+    filmes = models.ManyToManyField(Filme)
+
+    def __str__(self):
+        return "#" + str(self.pk) + " - " + str(self.data_inicio) + " " + self.usuario.first_name
+
+    class Meta:
+        verbose_name = 'Locação'
+        verbose_name_plural = 'Locações'
+
+
+class StatusLocacao(models.Model):
+    """
+    Define o `estado da locação`: 'Realizada', 'Com Pendências', 'Cancelada' e 'Finalizada'
+    """
+    status_locacao = models.CharField(max_length=100)
+    icone = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.status_locacao
+
+    class Meta:
+        verbose_name = 'Status da Locação'
+        verbose_name_plural = 'Status das Locações'

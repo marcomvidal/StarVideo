@@ -36,8 +36,8 @@
 <p>&nbsp;</p>
 
 <div class="row">
-{% if clientes %}
-    {% for cliente in clientes %}
+{% if page_obj %}
+    {% for cliente in page_obj %}
     
     <div class="col-md-3 container-cliente">
         {% if cliente.foto %}
