@@ -40,6 +40,10 @@ h1 {
     min-height: 300px;
 }
 
+.vitrine-locacao {
+    min-height: 510px;
+}
+
 .vitrine-locacao-cliente {
     max-height: 150px;
     max-width: 150px;

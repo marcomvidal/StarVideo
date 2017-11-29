@@ -53,6 +53,22 @@ class Filme(models.Model):
     def __str__(self):
         return self.titulo
 
+    def subtrai_quantidade(self):
+        """
+        Subtrai uma unidade da quantidade total do acervo de um `filme` e
+        persiste a alteração no banco de dados.
+        """
+        self.quantidade = self.quantidade - 1
+        self.save()
+
+    def repoe_quantidade(self):
+        """
+        Subtrai uma unidade da quantidade total do acervo de um `filme` e
+        persiste a alteração no banco de dados.
+        """
+        self.quantidade = self.quantidade + 1
+        self.save()
+
 
 class Classificacao(models.Model):
     """

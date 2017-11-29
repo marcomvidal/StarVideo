@@ -299,7 +299,7 @@ def locacoes_addfilme(request, pk):
     e persiste esta informação no banco de dados
     """
     locacao = get_object_or_404(Locacao, pk=pk)
-    filmes = Filme.objects.all()
+    filmes = Filme.objects.filter(quantidade__gt=0)
     form = LocacaoFilmeForm()
     paginator = Paginator(filmes, 8) # Mostrar 8 filmes por página
     page = request.GET.get('page')
@@ -316,6 +316,8 @@ def locacoes_addfilme(request, pk):
         filme = Filme.objects.get(pk=request.POST['filme'])
         locacao.save()
         locacao.filmes.add(filme)
+        filme.subtrai_quantidade()
+
         return redirect('locacoes:locacoes-editar', pk=locacao.pk)
 
     context = {
@@ -325,3 +327,47 @@ def locacoes_addfilme(request, pk):
     }
 
     return render(request, 'locacoes/filmes.html', context)
+
+
+@login_required
+def locacoes_addfilme_buscar(request, pk):
+    """
+    Exibição dos `filmes` que contenham um dado título, para selecionar
+    para `locação`.
+    """
+    busca = request.GET.get('campo_busca')
+    locacao = get_object_or_404(Locacao, pk=pk)
+    filmes = Filme.objects.filter(Q(titulo__icontains=busca), quantidade__gt=0).order_by('titulo')
+    paginator = Paginator(filmes, 8) # Mostrar 8 filmes por página
+    page = request.GET.get('page')
+
+    try:
+        filmes = paginator.page(page)
+    except PageNotAnInteger:
+        filmes = paginator.page(1)
+    except EmptyPage:
+        filmes = paginator.page(paginator.num_pages)
+
+    context = {
+        'locacao': locacao,
+        'page_obj': filmes,
+        'busca': busca
+    }
+
+    return render(request, 'locacoes/filmes.html', context)
+
+
+@login_required
+def locacoes_delfilme(request, pk):
+    """
+    Direciona o usuário para selecionar um `filme` para sua locação
+    e persiste esta informação no banco de dados
+    """
+    locacao = get_object_or_404(Locacao, pk=pk)
+    form = LocacaoFilmeForm(request.POST, instance=locacao)
+    filme = Filme.objects.get(pk=request.POST['filme'])
+    locacao.save()
+    locacao.filmes.remove(filme)
+    filme.repoe_quantidade()
+
+    return redirect('locacoes:locacoes-editar', pk=locacao.pk)

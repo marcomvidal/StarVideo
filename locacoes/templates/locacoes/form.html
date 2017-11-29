@@ -179,42 +179,51 @@
                     {% endif %}
                 </div>
                 <div class="panel-body">
-                    &nbsp;
-                    <p>Por enquanto, nenhum filme foi adicionado a esta locação.</p>
-                    {% for filme in locacao.filmes.all %}
+                &nbsp;
+                    <div class="row">
                         
-                        <!-- Filme -->
-                        <div class="col-md-3">
-                            {% if filme.capa %}
-                            <div class="col-md-12">
-                                <a class="thumbnail vitrine-imagem" href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
-                                    <img class="img-rounded vitrine-filme" src="{{ filme.capa.url }}" alt="Capa: {{ filme.titulo }}" />
-                                </a>
-                            </div>
-                            {% endif %}
+                        {% if locacao.filmes %}
+                        {% for filme in locacao.filmes.all %}
                             
-                            <div class="col-md-12">
-                                <h4 class="text-center vitrine-titulo">
-                                    <a href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
-                                        {{ filme.titulo }}
+                            <!-- Filme -->
+                            <div class="col-md-3 vitrine-locacao">
+                                {% if filme.capa %}
+                                <div class="col-md-12">
+                                    <a class="thumbnail vitrine-imagem" href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
+                                        <img class="img-rounded vitrine-filme" src="{{ filme.capa.url }}" alt="Capa: {{ filme.titulo }}" />
                                     </a>
-                                    {% if filme.blockbuster is True %}
-                                    <i class="fa fa-star-o" title="Este filme é um blockbuster"></i>
-                                    {% endif %}
-                                </h4>
-                                </p>
+                                </div>
+                                {% endif %}
+                                
+                                <div class="col-md-12">
+                                    <h4 class="text-center vitrine-titulo">
+                                        <a href="{% url 'locacoes:filmes-detalhes' pk=filme.pk %}">
+                                            {{ filme.titulo }}
+                                        </a>
+                                        {% if filme.blockbuster is True %}
+                                        <i class="fa fa-star-o" title="Este filme é um blockbuster"></i>
+                                        {% endif %}
+                                    </h4>
+                                    </p>
+                                </div>
+                                <hr />
+                                <div class="text-center">
+                                    <form id="formulario_exclusao" action="{% url 'locacoes:locacoes-delfilme' pk=locacao.pk %}" method="POST" accept-charset="utf-8">
+                                        {% csrf_token %}
+                                        <input name="filme" value="{{ filme.id }}" type="hidden"></input>
+                                        <button type="submit" class="btn btn-danger"><i class="fa fa-close"></i> Remover</a></button>
+                                    </form>
+                                </div>
                             </div>
-                            <hr />
-                            <div class="text-center">
-                                <form id="formulario_exclusao" action="{% url 'locacoes:filmes-excluir' pk=filme.pk %}" method="POST" accept-charset="utf-8">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger"><i class="fa fa-close"></i> Remover</a></button>
-                                </form>
-                            </div>
-                        </div>
-                        <!-- /Filme -->
+                            <!-- /Filme -->
+                        {% endfor %}
 
-                    {% endfor %}
+                        {% else %}
+                        <div class="col-md-12">
+                            <p>Por enquanto, nenhum filme foi adicionado a esta locação.</p>
+                        </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
         </div>

@@ -10,11 +10,11 @@
 
 <ol class="breadcrumb">
     <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:locacoes-editar' pk=locacao.id %}">Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</a></li>
     {% if busca is not Null %}
-        <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
-        <li class="active">Resultados da busca por: "{{ busca }}"</li>
+        <li class="active">Adicionar Filme - Resultados da busca por: "{{ busca }}"</li>
     {% else %}
-        <li class="active">Filmes</li>
+        <li class="active">Adicionar Filme</li>
     {% endif %}
 </ol>
 
@@ -22,7 +22,7 @@
 
 <div class="row">
     <div class="col-md-12">
-    <form id="formulario_busca" action="{% url 'locacoes:filmes-buscar' %}" method="GET" accept-charset="utf-8">
+    <form id="formulario_busca" action="{% url 'locacoes:locacoes-addfilme-buscar' pk=locacao.id %}" method="GET" accept-charset="utf-8">
         <div class="input-group">
             <input type="text" name="campo_busca" class="form-control" placeholder="Por qual filme você está procurando?">
             <div class="input-group-btn">
