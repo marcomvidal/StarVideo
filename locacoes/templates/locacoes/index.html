@@ -1,0 +1,64 @@
+{% extends "common/base.html" %}
+{% load bootstrap3 %}
+{% load static %}
+{% block title %}Locações Atuais{% endblock %}
+
+{% block body %}
+<h1><i class="fa fa-film"></i> Locações Atuais | <a class="btn btn-default" href="{% url 'locacoes:locacoes-criar' %}" title="Adicionar uma nova locação."><i class="fa fa-plus"></i></a></h1>
+
+<p>&nbsp;</p>
+
+<ol class="breadcrumb">
+    <li class="active"><a href="#">Home</a></li>
+</ol>
+
+<p>&nbsp;</p>
+
+<div class="row">
+{% if locacoes %}
+    {% for locacao in locacoes %}
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading col-md-12">
+                <a href="{% url 'locacoes:clientes-detalhes' pk=locacao.cliente.id %}">
+                    <h3 class="panel-title col-md-11 titulo-painel-locacao">
+                        <strong>#{{ locacao.id }}</strong>  - <i class="fa fa-user-o" title="Cliente"></i> {{ locacao.cliente.nome }}
+                    </h3>
+                    <a href="{% url 'locacoes:locacoes-editar' pk=locacao.pk %}" class="col-md-1 panel-title btn btn-default">
+                        <i class="fa fa-edit" title="Editar locação"></i>
+                    </a>
+                </a>
+            </div>
+            <div class="panel-body">
+                <div class="col-md-4">
+                    <h4>Status: {{ locacao.estado_locacao|safe }}</h4>
+                </div>
+                <div class="col-md-4">
+                    <h4><i class="fa fa-calendar"></i> Início: {{ locacao.data_inicio|date:"d/M/Y" }}</h4>
+                </div>
+                <div class="col-md-4">
+                    <h4><i class="fa fa-calendar"></i> Fim: {{ locacao.data_inicio|date:"d/M/Y" }}</h4>
+                </div>
+                <div class="col-md-12">
+                    <h3>
+                    {% for filme in locacao.filmes.all %}
+                        <a href="{% url 'locacoes:filmes-detalhes' pk=filme.id %}"><span class="label label-default">{{ filme.titulo }}</span></a>
+                    {% endfor %}
+                    </h3>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
+</div>
+
+
+<!-- Paginação -->
+{% block paginator %}
+    {% include "common/paginator.html" %}
+{% endblock %}
+
+
+{% endblock %}
+

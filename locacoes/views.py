@@ -208,6 +208,15 @@ class ClienteDeleteView(DeleteView):
 ##############################################################################################################
 # Módulo de Locações
 ##############################################################################################################
+class LocacaoListView(ListView):
+    """ Exibição de todos as `locações` cadastradas. """
+    model = Locacao
+    template_name = 'locacoes/index.html'
+    paginate_by = 10
+    context_object_name = 'locacoes'
+    ordering = ['data_inicio']
+
+
 @login_required
 def locacoes_criar(request):
     """ Cadastro de `locações`. """
@@ -314,6 +323,7 @@ def locacoes_addfilme(request, pk):
     if request.method == 'POST':
         form = LocacaoFilmeForm(request.POST, instance=locacao)
         filme = Filme.objects.get(pk=request.POST['filme'])
+        locacao.soma_valor_filme()
         locacao.save()
         locacao.filmes.add(filme)
         filme.subtrai_quantidade()
@@ -366,6 +376,10 @@ def locacoes_delfilme(request, pk):
     locacao = get_object_or_404(Locacao, pk=pk)
     form = LocacaoFilmeForm(request.POST, instance=locacao)
     filme = Filme.objects.get(pk=request.POST['filme'])
+
+    if (locacao.preco >= 0):
+        locacao.subtrai_valor_filme()
+    
     locacao.save()
     locacao.filmes.remove(filme)
     filme.repoe_quantidade()

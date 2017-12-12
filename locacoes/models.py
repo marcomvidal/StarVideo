@@ -117,6 +117,26 @@ class Locacao(models.Model):
     def __str__(self):
         return "#" + str(self.pk) + " - " + str(self.data_inicio) + " " + self.usuario.first_name
 
+    def estado_locacao(self):
+        if (self.status_locacao == 1):
+            return '<button class="btn btn-default"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+        elif (self.status_locacao == 2):
+            return '<button class="btn btn-warning"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+        elif (self.status_locacao == 3):
+            return '<button class="btn btn-danger"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+        else:
+            return '<button class="btn btn-success"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+
+    def soma_valor_filme(self):
+        self.preco = self.preco + 8
+
+    def subtrai_valor_filme(self):
+        self.preco = self.preco - 8
+
+    def soma_multa(self):
+        return self.preco + self.multa
+
+
     class Meta:
         verbose_name = 'Locação'
         verbose_name_plural = 'Locações'

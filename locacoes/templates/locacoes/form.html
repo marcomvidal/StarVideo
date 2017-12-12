@@ -103,6 +103,34 @@
         <div class="col-md-12">
             <hr />
         </div>
+        
+        &nbsp;
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-4 col-sm-2">
+                        <p>Filmes:</p>
+                        <h1 class="text-left">{{ locacao.filmes.count }}</h1>
+                    </div>
+                    <div class="col-md-4 col-sm-5">
+                        <p>Multa:</p>
+                        <h1 class="text-left">R$ {{ locacao.multa }}</h1>
+                    </div>
+                    <div class="col-md-4 col-sm-5">
+                        <p>Total:</p>
+                        {% if locacao.multa %}
+                            <h1 class="text-left">R$ {{ locacao.soma_multa }}</h1>
+                        {% else %}
+                        <h1 class="text-left">R$ {{ locacao.preco }}</h1>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <hr />
+        </div>
 
         {% if locacao is not None %}
         <div class="col-md-12">
