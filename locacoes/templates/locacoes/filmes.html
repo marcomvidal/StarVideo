@@ -9,7 +9,7 @@
 <p>&nbsp;</p>
 
 <ol class="breadcrumb">
-    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:locacoes-index' %}">Home</a></li>
     <li><a href="{% url 'locacoes:locacoes-editar' pk=locacao.id %}">Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</a></li>
     {% if busca is not Null %}
         <li class="active">Adicionar Filme - Resultados da busca por: "{{ busca }}"</li>

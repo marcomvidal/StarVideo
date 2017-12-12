@@ -109,6 +109,7 @@ class Locacao(models.Model):
     pago = models.BooleanField(default=False)
     multa = models.DecimalField(max_digits=5, decimal_places=2)
     preco = models.DecimalField(max_digits=5, decimal_places=2, null=True)
+    total = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     cliente = models.ForeignKey('locacoes.Cliente', null=True)
     usuario = models.ForeignKey('auth.User')
     status_locacao = models.ForeignKey('locacoes.StatusLocacao')
@@ -119,13 +120,13 @@ class Locacao(models.Model):
 
     def estado_locacao(self):
         if (self.status_locacao == 1):
-            return '<button class="btn btn-default"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+            return '<a class="text-primary"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
         elif (self.status_locacao == 2):
-            return '<button class="btn btn-warning"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+            return '<a class="text-warning"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
         elif (self.status_locacao == 3):
-            return '<button class="btn btn-danger"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+            return '<a class="text-danger"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
         else:
-            return '<button class="btn btn-success"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</button>'
+            return '<a class="text-success"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
 
     def soma_valor_filme(self):
         self.preco = self.preco + 8

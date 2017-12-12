@@ -9,7 +9,7 @@
 <p>&nbsp;</p>
 
 <ol class="breadcrumb">
-    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:locacoes-index' %}">Home</a></li>
     {% if busca is not Null %}
         <li><a href="{% url 'locacoes:filmes-index' %}">Filmes</a></li>
         <li class="active">Resultados da busca por: "{{ busca }}"</li>

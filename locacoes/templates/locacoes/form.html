@@ -14,7 +14,7 @@
 <p>&nbsp;</p>
 
 <ol class="breadcrumb">
-    <li><a href="#">Home</a></li>
+    <li><a href="{% url 'locacoes:locacoes-index' %}">Home</a></li>
     <li><a href="{% url 'locacoes:filmes-index' %}">Locações</a></li>
     {% if locacao is not None %}
     <li class="active">Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</li>
@@ -64,7 +64,7 @@
 
         <div class="form-group col-md-3">
             <label for="multa">Multa</label>
-            <input name="multa" value="{{ form.multa.value|default:'' }}" id="multa" type="number" placeholder="Valor da Multa" class="form-control">
+            <input name="multa" value="{{ form.multa.value|default:'' }}" id="multa" type="text" placeholder="Valor da Multa" class="form-control">
             {% if form.multa.errors %}
             <div class="alert alert-danger">
                 <strong>{{ form.multa.errors|striptags }}</strong>
@@ -100,6 +100,7 @@
 
     </form>
 
+        {% if locacao %}
         <div class="col-md-12">
             <hr />
         </div>
@@ -127,6 +128,7 @@
                 </div>
             </div>
         </div>
+        {% endif %}
 
         <div class="col-md-12">
             <hr />
@@ -140,18 +142,18 @@
 
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading col-md-12">
-                    <h3 class="panel-title col-md-11 titulo-painel-locacao">
+                <div class="panel-heading col-md-12 col-xs-12">
+                    <h3 class="panel-title col-md-11 col-xs-11 titulo-painel-locacao">
                         Cliente locador
                     </h3>
 
                     {% if locacao is not None %}
                         {% if locacao.cliente is None %}
-                        <a href="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" class="col-md-1 panel-title btn btn-default">
+                        <a href="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" class="col-md-1 col-xs-1 panel-title btn btn-default">
                             <i class="fa fa-plus" title="Adicionar cliente"></i>
                         </a>
                         {% else %}
-                        <a href="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" class="col-md-1 panel-title btn btn-default">
+                        <a href="{% url 'locacoes:locacoes-addcliente' pk=locacao.pk %}" class="col-md-1 col-xs-1 panel-title btn btn-default">
                             <i class="fa fa-edit" title="Trocar cliente"></i>
                         </a>
                         {% endif %}
@@ -195,13 +197,13 @@
 
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading col-md-12">
-                    <h3 class="panel-title col-md-11 titulo-painel-locacao">
+                <div class="panel-heading col-md-12 col-xs-12">
+                    <h3 class="panel-title col-md-11 col-xs-11 titulo-painel-locacao">
                         Filmes desta locação
                     </h3>
 
                     {% if locacao is not None %}
-                    <a href="{% url 'locacoes:locacoes-addfilme' pk=locacao.pk %}" class="col-md-1 panel-title btn btn-default">
+                    <a href="{% url 'locacoes:locacoes-addfilme' pk=locacao.pk %}" class="col-md-1 col-xs-1 panel-title btn btn-default">
                         <i class="fa fa-plus" title="Adicionar um filme"></i>
                     </a>
                     {% endif %}
@@ -210,7 +212,7 @@
                 &nbsp;
                     <div class="row">
                         
-                        {% if locacao.filmes %}
+                        {% if locacao.filmes.all %}
                         {% for filme in locacao.filmes.all %}
                             
                             <!-- Filme -->

@@ -60,7 +60,6 @@ class LocacaoForm(forms.ModelForm):
     data_inicio = forms.DateTimeField(required=True)
     data_fim = forms.DateTimeField(required=True)
     pago = forms.BooleanField(required=False, initial=False)
-    multa = forms.BooleanField(required=False, initial=False)
 
     class Meta:
         model = Locacao
