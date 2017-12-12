@@ -1,10 +1,10 @@
 """
 Models: App 'locacoes'
 """
+from datetime import date
 from django.db import models
 from django.core.validators import MinLengthValidator
 from django.utils import timezone
-from datetime import date
 
 
 class Cliente(models.Model):
@@ -107,7 +107,7 @@ class Locacao(models.Model):
     data_inicio = models.DateTimeField(default=timezone.now)
     data_fim = models.DateTimeField()
     pago = models.BooleanField(default=False)
-    multa = models.DecimalField(max_digits=5, decimal_places=2)
+    multa = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     preco = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     total = models.DecimalField(max_digits=5, decimal_places=2, null=True)
     cliente = models.ForeignKey('locacoes.Cliente', null=True)
@@ -118,24 +118,20 @@ class Locacao(models.Model):
     def __str__(self):
         return "#" + str(self.pk) + " - " + str(self.data_inicio) + " " + self.usuario.first_name
 
-    def estado_locacao(self):
-        if (self.status_locacao == 1):
-            return '<a class="text-primary"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
-        elif (self.status_locacao == 2):
-            return '<a class="text-warning"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
-        elif (self.status_locacao == 3):
-            return '<a class="text-danger"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
-        else:
-            return '<a class="text-success"><i class="' + self.status_locacao.icone + '"></i> ' + self.status_locacao.status_locacao + '</a>'
-
     def soma_valor_filme(self):
-        self.preco = self.preco + 8
+        if self.preco:
+            self.preco = self.preco + 8
+        else:
+            self.preco = 8
 
     def subtrai_valor_filme(self):
         self.preco = self.preco - 8
 
     def soma_multa(self):
-        return self.preco + self.multa
+        if self.preco and self.multa:
+            self.total = self.preco + self.multa
+        else:
+            self.total = self.preco
 
 
     class Meta:

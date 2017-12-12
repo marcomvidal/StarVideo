@@ -1,0 +1,9 @@
+{% if locacao.status_locacao.id == 1 %}
+<a class="text-primary"><i class="{{ locacao.status_locacao.icone }}"></i> {{ locacao.status_locacao.status_locacao }}</a>
+{% elif locacao.status_locacao.id == 2 %}
+<a class="text-warning"><i class="{{ locacao.status_locacao.icone }}"></i> {{ locacao.status_locacao.status_locacao }}</a>
+{% elif locacao.status_locacao.id == 3 %}
+<a class="text-danger"><i class="{{ locacao.status_locacao.icone }}"></i> {{ locacao.status_locacao.status_locacao }}</a>
+{% else %}
+<a class="text-success"><i class="{{ locacao.status_locacao.icone }}"></i> {{ locacao.status_locacao.status_locacao }}</a>
+{% endif %}

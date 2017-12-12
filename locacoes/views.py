@@ -214,7 +214,7 @@ class LocacaoListView(ListView):
     template_name = 'locacoes/index.html'
     paginate_by = 10
     context_object_name = 'locacoes'
-    ordering = ['data_inicio']
+    ordering = ['-data_inicio']
 
 
 @login_required
@@ -252,6 +252,7 @@ def locacoes_editar(request, pk):
         if form.is_valid():
             locacao = form.save(commit=False)
             locacao.usuario = request.user
+            locacao.soma_multa()
             locacao.save()
             return redirect('locacoes:locacoes-editar', pk=locacao.pk)
     else:
@@ -324,6 +325,7 @@ def locacoes_addfilme(request, pk):
         form = LocacaoFilmeForm(request.POST, instance=locacao)
         filme = Filme.objects.get(pk=request.POST['filme'])
         locacao.soma_valor_filme()
+        locacao.soma_multa()
         locacao.save()
         locacao.filmes.add(filme)
         filme.subtrai_quantidade()
@@ -380,6 +382,7 @@ def locacoes_delfilme(request, pk):
     if (locacao.preco >= 0):
         locacao.subtrai_valor_filme()
     
+    locacao.soma_multa()
     locacao.save()
     locacao.filmes.remove(filme)
     filme.repoe_quantidade()

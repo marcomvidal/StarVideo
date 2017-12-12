@@ -10,15 +10,19 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 </head>
 <body>
+
+
 <!-- Barra de Navegação -->
 {% block navbar %}
     {% include "common/navbar.html" %}
 {% endblock %}
 
+
 <!-- Corpo da Página -->
 <div class="container">
     {% block body %}{% endblock %}
 </div>
+
 
 <!-- Scripts JavaScript -->
 {% bootstrap_javascript jquery=1 %}

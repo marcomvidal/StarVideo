@@ -11,11 +11,12 @@
 <h1><i class="fa fa-cart-plus"></i> Cadastro de Locações</h1>
 {% endif %}
 
+
 <p>&nbsp;</p>
+
 
 <ol class="breadcrumb">
     <li><a href="{% url 'locacoes:locacoes-index' %}">Home</a></li>
-    <li><a href="{% url 'locacoes:filmes-index' %}">Locações</a></li>
     {% if locacao is not None %}
     <li class="active">Locação: #{{ locacao.id }} - {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</li>
     {% else %}
@@ -64,7 +65,10 @@
 
         <div class="form-group col-md-3">
             <label for="multa">Multa</label>
-            <input name="multa" value="{{ form.multa.value|default:'' }}" id="multa" type="text" placeholder="Valor da Multa" class="form-control">
+            <div class="input-group">
+                <span class="input-group-addon">R$</span>
+                <input name="multa" value="{{ form.multa.value|default:'' }}" id="multa" type="text" placeholder="Valor da Multa" class="form-control">
+            </div>
             {% if form.multa.errors %}
             <div class="alert alert-danger">
                 <strong>{{ form.multa.errors|striptags }}</strong>
@@ -115,15 +119,11 @@
                     </div>
                     <div class="col-md-4 col-sm-5">
                         <p>Multa:</p>
-                        <h1 class="text-left">R$ {{ locacao.multa }}</h1>
+                        <h1 class="text-left">R$ {{ locacao.multa|default:0 }}</h1>
                     </div>
                     <div class="col-md-4 col-sm-5">
                         <p>Total:</p>
-                        {% if locacao.multa %}
-                            <h1 class="text-left">R$ {{ locacao.soma_multa }}</h1>
-                        {% else %}
-                        <h1 class="text-left">R$ {{ locacao.preco }}</h1>
-                        {% endif %}
+                        <h1 class="text-left">R$ {{ locacao.total|default:0 }}</h1>
                     </div>
                 </div>
             </div>
@@ -260,6 +260,7 @@
 
     </div>
 </div>
+
 
 <hr />
 

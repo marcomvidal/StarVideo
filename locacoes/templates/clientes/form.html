@@ -7,7 +7,9 @@
 {% block body %}
 <h1><i class="fa fa-user-o"></i> Cadastro de Clientes</h1>
 
+
 <p>&nbsp;</p>
+
 
 <ol class="breadcrumb">
     <li><a href="{% url 'locacoes:locacoes-index' %}">Home</a></li>
@@ -135,12 +137,15 @@
     {% endif %}
 </div>
 
+
 <hr />
+
 
 {% block save_form %}
     {% include "common/save_form.html" %}
 {% endblock %}
 </form>
+
 
 {% block scripts %}
     <!-- Scripts Específicos -->
@@ -149,5 +154,5 @@
     <script src="{% static 'js/consulta-cep.js' %}"></script>
 {% endblock %}
 
-{% endblock %}
 
+{% endblock %}

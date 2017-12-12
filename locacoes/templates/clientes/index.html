@@ -3,10 +3,13 @@
 {% load static %}
 {% block title %}Clientes Cadastrados{% endblock %}
 
+
 {% block body %}
 <h1><i class="fa fa-user-o"></i> Clientes Cadastrados | <a class="btn btn-default" href="{% url 'locacoes:clientes-criar' %}" title="Adicionar um novo cliente ao cadastro."><i class="fa fa-plus"></i></a></h1>
 
+
 <p>&nbsp;</p>
+
 
 <ol class="breadcrumb">
     <li><a href="{% url 'locacoes:locacoes-index' %}">Home</a></li>
@@ -18,7 +21,9 @@
     {% endif %}
 </ol>
 
+
 <p></p>
+
 
 <div class="row">
     <div class="col-md-12">
@@ -32,7 +37,10 @@
     </form>
     </div>
 </div>
+
+
 <p>&nbsp;</p>
+
 
 <div class="row">
 {% if clientes %}
@@ -84,4 +92,3 @@
 
 
 {% endblock %}
-
