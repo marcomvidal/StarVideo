@@ -11,7 +11,9 @@
     {% if filme.blockbuster is True %}
     <i class="fa fa-star-o" title="Este filme é um blockbuster"></i>
     {% endif %}
+    {% if user.is_authenticated %}
     | <a class="btn btn-default" href={% url 'locacoes:filmes-editar' pk=filme.id %}><i class="fa fa-pencil-square-o" title="Editar este filme"></i></a>
+    {% endif %}
 </h1>
 
 
@@ -29,7 +31,9 @@
     <div class="col-md-8">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Sinopse</div>
+                <div class="panel-heading">
+                    <h4>Sinopse</h4>
+                </div>
                 <div class="panel-body">
                     <p>{{ filme.sinopse|escape }}</p>
                     <p><strong>Cadastrado por:</strong> {{ filme.usuario.first_name }} {{ filme.usuario.last_name }}</p>

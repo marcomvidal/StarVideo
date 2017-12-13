@@ -114,15 +114,15 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-4 col-sm-2">
-                        <p>Filmes:</p>
+                        <h4>Filmes:</h4>
                         <h1 class="text-left">{{ locacao.filmes.count }}</h1>
                     </div>
                     <div class="col-md-4 col-sm-5">
-                        <p>Multa:</p>
+                        <h4>Multa:</h4>
                         <h1 class="text-left">R$ {{ locacao.multa|default:0 }}</h1>
                     </div>
                     <div class="col-md-4 col-sm-5">
-                        <p>Total:</p>
+                        <h4>Total:</h4>
                         <h1 class="text-left">R$ {{ locacao.total|default:0 }}</h1>
                     </div>
                 </div>

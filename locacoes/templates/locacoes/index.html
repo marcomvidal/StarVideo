@@ -5,7 +5,12 @@
 
 
 {% block body %}
-<h1><i class="fa fa-cart-plus"></i> Locações Atuais | <a class="btn btn-default" href="{% url 'locacoes:locacoes-criar' %}" title="Adicionar uma nova locação."><i class="fa fa-plus"></i></a></h1>
+<h1>
+    <i class="fa fa-cart-plus"></i> Locações Atuais
+    {% if user.is_authenticated %}
+    | <a class="btn btn-default" href="{% url 'locacoes:locacoes-criar' %}" title="Adicionar uma nova locação."><i class="fa fa-plus"></i></a>
+    {% endif %}
+</h1>
 
 
 <p>&nbsp;</p>
@@ -24,43 +29,57 @@
     {% for locacao in locacoes %}
     <div class="col-md-12">
         <div class="panel panel-default">
+
             <div class="panel-heading col-md-12 col-xs-12">
-                
-                <h3 class="panel-title col-md-11 col-xs-11 titulo-painel-locacao">
-                    #{{ locacao.id }}
+                <h4 class="panel-title col-md-11 col-xs-11 titulo-painel-locacao">
+                    <span>#{{ locacao.id }}</span>
                     {% if locacao.cliente %}
                         - <a href="{% url 'locacoes:clientes-detalhes' pk=locacao.cliente.id %}"> <i class="fa fa-user-o"   title="Cliente"></i>
                         {{ locacao.cliente.nome }}
                         </a>
                     {% endif %}
-                </h3>
+                </h4>
+                {% if user.is_authenticated %}
                 <a href="{% url 'locacoes:locacoes-editar' pk=locacao.pk %}" class="col-md-1 col-xs-1 panel-title btn btn-default">
                     <i class="fa fa-edit" title="Editar locação"></i>
                 </a>
-                
+                {% endif %}
             </div>
+
             <div class="panel-body">
-                <div class="col-md-4">
-                    <h4><strong>Status:</strong>
-                        {% block estado_locacao %}
-                            {% include "common/estado_locacao.html" %}
-                        {% endblock %}
-                    </h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        &nbsp;
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4><i class="fa fa-money"></i> R$ {{ locacao.total }}</h4>
+                    </div>
+
+                    <div class="col-md-4">
+                        <h4><i class="fa fa-calendar"></i> {{ locacao.data_inicio|date:"d/m/Y" }} <i class="fa fa-arrow-right"></i> {{ locacao.data_fim|date:"d/m/Y" }}</h4>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <h4>
+                            {% block estado_locacao %}
+                                {% include "common/estado_locacao.html" %}
+                            {% endblock %}
+                        </h4>
+                    </div>
                 </div>
-                <div class="col-md-4">
-                    <h4><i class="fa fa-calendar"></i> <strong>Início:</strong> {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</h4>
-                </div>
-                <div class="col-md-4">
-                    <h4><i class="fa fa-calendar"></i> <strong>Fim:</strong> {{ locacao.data_inicio|date:"d/m/Y, h:m" }}</h4>
-                </div>
-                <div class="col-md-12">
-                    <h3>
-                    {% for filme in locacao.filmes.all %}
-                        <a href="{% url 'locacoes:filmes-detalhes' pk=filme.id %}"><span class="label label-default">{{ filme.titulo }}</span></a>
-                    {% endfor %}
-                    </h3>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>
+                        {% for filme in locacao.filmes.all %}
+                            <a href="{% url 'locacoes:filmes-detalhes' pk=filme.id %}"><span class="label label-default">{{ filme.titulo }}</span></a>
+                        {% endfor %}
+                        </h4>
+                    </div>
                 </div>
             </div>
+
         </div>
     </div>
     {% endfor %}

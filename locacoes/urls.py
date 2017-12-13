@@ -2,6 +2,8 @@
 URL Dispatcher: App 'locacoes'
 """
 from django.conf.urls import url
+from django.contrib.auth import views as auth_views
+
 
 from . import views
 
@@ -10,6 +12,8 @@ app_name = 'locacoes'
 
 urlpatterns = [
     url(r'^$',                                          views.LocacaoListView.as_view(),        name="locacoes-index"),
+    url(r'^login/$',                                    auth_views.login,                       name='login'),
+    url(r'^logout/$',                                   auth_views.logout,                      name='logout'),
     url(r'locacoes/novo/$',                             views.locacoes_criar,                   name="locacoes-criar"),
     url(r'locacoes/(?P<pk>[0-9]+)/editar/$',            views.locacoes_editar,                  name="locacoes-editar"),
     url(r'locacoes/(?P<pk>[0-9]+)/cliente/$',           views.locacoes_addcliente,              name="locacoes-addcliente"),

@@ -11,7 +11,9 @@
     {% if cliente.banido is True %}
     <i class="fa fa-ban" title="Este cliente está banido"></i>
     {% endif %}
+    {% if user.is_authenticated %}
     | <a class="btn btn-default" href={% url 'locacoes:clientes-editar' pk=cliente.id %}><i class="fa fa-pencil-square-o" title="Editar este cliente"></i></a>
+    {% endif %}
 </h1>
 
 
@@ -29,9 +31,11 @@
     <div class="col-md-8">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Informações pessoais</div>
+                <div class="panel-heading">
+                    <h4>Informações pessoais</h4>
+                </div>
                 <div class="panel-body">
-                        <p><strong>Nome:</strong> {{ cliente.nome }}</p>
+                    <p><strong>Nome:</strong> {{ cliente.nome }}</p>
                     <p><strong>Cadastrado por:</strong> {{ cliente.usuario.first_name }} {{ cliente.usuario.last_name }}</p>
                 </div>
                     
@@ -52,7 +56,9 @@
 
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Endereço</div>
+                <div class="panel-heading">
+                    <h4>Endereço</h4>
+                </div>
                 <div class="panel-body">
                     <p>{{ cliente.endereco }}, {{ cliente.numero }} {% if cliente.complemento %}- {{ cliente.complemento }}{% endif %}</p>
                 </div>
@@ -74,7 +80,9 @@
 
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Contato</div>
+                <div class="panel-heading">
+                    <h4>Contato</h4>
+                </div>
                 
                     
                 <table class="table">

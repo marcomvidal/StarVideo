@@ -5,7 +5,13 @@
 
 
 {% block body %}
-<h1><i class="fa fa-film"></i> Filmes Disponíveis | <a class="btn btn-default" href="{% url 'locacoes:filmes-criar' %}" title="Adicionar um novo filme à coleção."><i class="fa fa-plus"></i></a></h1>
+<h1>
+    <i class="fa fa-film"></i>
+    Filmes Disponíveis
+    {% if user.is_authenticated %}
+    | <a class="btn btn-default" href="{% url 'locacoes:filmes-criar' %}" title="Adicionar um novo filme à coleção."><i class="fa fa-plus"></i></a>
+    {% endif %}
+</h1>
 
 
 <p>&nbsp;</p>
@@ -72,6 +78,7 @@
             </p>
         </div>
         <hr />
+        {% if user.is_authenticated %}
         <div class="text-center">
             <form id="formulario_exclusao" action="{% url 'locacoes:filmes-excluir' pk=filme.pk %}" method="POST" accept-charset="utf-8">
                 {% csrf_token %}
@@ -79,6 +86,7 @@
                 <button type="submit" class="btn btn-danger"><i class="fa fa-close"></i> Excluir</a></button>
             </form>
         </div>
+        {% endif %}
     </div>
     {% endfor %}
 {% endif %}

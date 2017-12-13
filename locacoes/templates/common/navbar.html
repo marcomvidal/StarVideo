@@ -19,21 +19,27 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Locações <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{% url 'locacoes:locacoes-index' %}"><i class="fa fa-th"></i> Ver todas</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'locacoes:locacoes-criar' %}"><i class="fa fa-plus"></i> Cadastrar</a></li>
+            {% endif %}
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Filmes <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{% url 'locacoes:filmes-index' %}"><i class="fa fa-th"></i> Ver todos</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'locacoes:filmes-criar' %}"><i class="fa fa-plus"></i> Cadastrar</a></li>
+            {% endif %}
           </ul>
         </li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Clientes <span class="caret"></span></a>
           <ul class="dropdown-menu">
             <li><a href="{% url 'locacoes:clientes-index' %}"><i class="fa fa-th"></i> Ver todos</a></li>
+            {% if user.is_authenticated %}
             <li><a href="{% url 'locacoes:clientes-criar' %}"><i class="fa fa-plus"></i> Cadastrar</a></li>
+            {% endif %}
           </ul>
         </li>
       </ul>
@@ -43,12 +49,12 @@
           {% if user.is_authenticated %}
               <i class="fa fa-user-circle-o"></i> {{ user.first_name }} {{ user.last_name }} <span class="caret"></span></a>
             <ul class="dropdown-menu">
-                <li><a href="#"><span class="fa fa-sign-out"></span> Sair</a></li>
+                <li><a href="{% url 'locacoes:logout' %}"><span class="fa fa-sign-out"></span> Sair</a></li>
             </ul>
           {% else %}
             <i class="fa fa-user"></i> Visitante <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="#"><i class="fa fa-sign-in"></i> Entrar</a></li>
+              <li><a href="{% url 'locacoes:login' %}"><i class="fa fa-sign-in"></i> Entrar</a></li>
             </ul>
           {% endif %}
         </li>
