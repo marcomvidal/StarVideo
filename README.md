@@ -2,7 +2,7 @@
 
 Sistema web de cadastro de filmes, clientes e locações que realiza interações com banco de dados.
 
-Ferramentas utilizadas:
+## Ferramentas utilizadas:
 
 - Python 3.5.2
 - Django 1.11. com módulos DjangoBootstrap e MySQLClient
