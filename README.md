@@ -9,6 +9,13 @@ Sistema web de cadastro de filmes, clientes e locações que realiza interaçõe
 - HTML5 e CSS3
 - Bootstrap 3
 
+## Recursos
+- Padrão de arquitetura MTV (Model-Template-View), similar ao MVC;
+- Acesso a dados com o ORM padrão do framework;
+- Todas as dependências de pacotes listadas em `requirements.txt`;
+- Validação de dados nos arquivos `forms.py` dos projetos;
+- Models foram compatibilizados ao painel do `django-admin` para administrar os dados diretamente, se desejado.
+
 ## Screenshots
 * [Listagem de locações](https://raw.githubusercontent.com/marcomvidal/StarVideo/master/screenshot_locacoes.png)
 * [Listagem de filmes](https://raw.githubusercontent.com/marcomvidal/StarVideo/master/screenshot_filmes.png)
