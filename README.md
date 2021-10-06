@@ -1,6 +1,6 @@
 # StarVideo
 
-Sistema web de cadastro de filmes, clientes e locações que realiza interações com banco de dados.
+Sistema web de cadastro de filmes, clientes e locações armazenados no banco de dados.
 
 ## Ferramentas utilizadas
 - Python 3.5.2
